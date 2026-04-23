@@ -1,17 +1,17 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.4.14)  14 APR 2026 15:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.2) (preloaded format=pdflatex 2026.4.14)  23 APR 2026 13:14
 entering extended mode
  restricted \write18 enabled.
- file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/ivans/OneDrive/Desktop/Unic/Web_CP_2026/latex/task.tex
-(c:/Users/ivans/OneDrive/Desktop/Unic/Web_CP_2026/latex/task.tex
+**./task.tex
+(task.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
 (D:\Apps\IT\MikTex\tex/latex/extsizes\extarticle.cls
 Document Class: extarticle 1996/10/08 v1.0 Non Standard LaTeX document class
 (D:\Apps\IT\MikTex\tex/latex/extsizes\size14.clo
 File: size14.clo 1999/11/11 v1.4a NON-Standard LaTeX file (size option)
-) (D:\Apps\IT\MikTex\tex/latex/base\exscale.sty
+)
+(D:\Apps\IT\MikTex\tex/latex/base\exscale.sty
 Package: exscale 2025/06/05 v2.1i Standard LaTeX package exscale
 LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 57.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
@@ -31,13 +31,16 @@ LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 \abovecaptionskip=\skip49
 \belowcaptionskip=\skip50
 \bibindent=\dimen149
-) (D:\Apps\IT\MikTex\tex/latex/base\fontenc.sty
+)
+(D:\Apps\IT\MikTex\tex/latex/base\fontenc.sty
 Package: fontenc 2025/07/18 v2.1d Standard LaTeX package
- (D:\Apps\IT\MikTex\tex/latex/cyrillic\t2aenc.def
+
+(D:\Apps\IT\MikTex\tex/latex/cyrillic\t2aenc.def
 File: t2aenc.def 2023/11/07 v1.0k Cyrillic encoding definition file
 Now handling font encoding T2A ...
 ... processing UTF-8 mapping file for font encoding T2A
- (D:\Apps\IT\MikTex\tex/latex/base\t2aenc.dfu
+
+(D:\Apps\IT\MikTex\tex/latex/base\t2aenc.dfu
 File: t2aenc.dfu 2022/06/07 v1.3c UTF-8 support
    defining Unicode char U+00A4 (decimal 164)
    defining Unicode char U+00A7 (decimal 167)
@@ -238,26 +241,39 @@ File: t2aenc.dfu 2022/06/07 v1.3c UTF-8 support
    defining Unicode char U+FB05 (decimal 64261)
    defining Unicode char U+FB06 (decimal 64262)
 ))
-LaTeX Font Info:    Trying to load font information for T2A+cmr on input line 116.
- (D:\Apps\IT\MikTex\tex/latex/cyrillic\t2acmr.fd
+LaTeX Font Info:    Trying to load font information for T2A+cmr on input line 1
+16.
+
+(D:\Apps\IT\MikTex\tex/latex/cyrillic\t2acmr.fd
 File: t2acmr.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
-)) (D:\Apps\IT\MikTex\tex/latex/base\inputenc.sty
+))
+(D:\Apps\IT\MikTex\tex/latex/base\inputenc.sty
 Package: inputenc 2024/02/08 v1.3d Input encoding file
 \inpenc@prehook=\toks17
 \inpenc@posthook=\toks18
-) (D:\Apps\IT\MikTex\tex/generic/babel\babel.sty
-Package: babel 2026/03/24 v26.5 The multilingual framework for LuaLaTeX, pdfLaTeX and XeLaTeX
+)
+(D:\Apps\IT\MikTex\tex/generic/babel\babel.sty
+Package: babel 2026/03/24 v26.5 The multilingual framework for LuaLaTeX, pdfLaT
+eX and XeLaTeX
 \babel@savecnt=\count283
-LaTeX Encoding Info:    Redeclaring text command \ij (encoding OT1) on input line 2078.
-LaTeX Encoding Info:    Redeclaring text command \IJ (encoding OT1) on input line 2080.
-LaTeX Encoding Info:    Redeclaring text command \ij (encoding T1) on input line 2082.
-LaTeX Encoding Info:    Redeclaring text command \IJ (encoding T1) on input line 2083.
-LaTeX Encoding Info:    Ignoring declaration for text command \ij (encoding ?) on input line 2084.
-LaTeX Encoding Info:    Ignoring declaration for text command \IJ (encoding ?) on input line 2086.
-LaTeX Encoding Info:    Ignoring declaration for text command \SS (encoding ?) on input line 2111.
+LaTeX Encoding Info:    Redeclaring text command \ij (encoding OT1) on input li
+ne 2078.
+LaTeX Encoding Info:    Redeclaring text command \IJ (encoding OT1) on input li
+ne 2080.
+LaTeX Encoding Info:    Redeclaring text command \ij (encoding T1) on input lin
+e 2082.
+LaTeX Encoding Info:    Redeclaring text command \IJ (encoding T1) on input lin
+e 2083.
+LaTeX Encoding Info:    Ignoring declaration for text command \ij (encoding ?) 
+on input line 2084.
+LaTeX Encoding Info:    Ignoring declaration for text command \IJ (encoding ?) 
+on input line 2086.
+LaTeX Encoding Info:    Ignoring declaration for text command \SS (encoding ?) 
+on input line 2111.
 \U@D=\dimen150
 \l@unhyphenated=\language79
- (D:\Apps\IT\MikTex\tex/generic/babel\txtbabel.def)
+
+(D:\Apps\IT\MikTex\tex/generic/babel\txtbabel.def)
 \bbl@readstream=\read2
 \bbl@dirlevel=\count284
 Package babel Info: Configuration files are deprecated, as
@@ -268,11 +284,15 @@ Package babel Info: Configuration files are deprecated, as
 * Local config file bblopts.cfg used
 *
 (D:\Apps\IT\MikTex\tex/latex/arabi\bblopts.cfg
-File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of babel
-) (D:\Apps\IT\MikTex\tex/generic/babel/locale/en\babel-english.tex) (D:\Apps\IT\MikTex\tex/generic/babel/locale/ru\babel-russian.tex)
+File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of
+ babel
+)
+(D:\Apps\IT\MikTex\tex/generic/babel/locale/en\babel-english.tex)
+(D:\Apps\IT\MikTex\tex/generic/babel/locale/ru\babel-russian.tex)
 Package babel Info: Importing font and identification data for english
 (babel)             from babel-en.ini. Reported on input line 4330.
- (D:\Apps\IT\MikTex\tex/latex/babel-english\english.ldf
+
+(D:\Apps\IT\MikTex\tex/latex/babel-english\english.ldf
 Language: english 2017/06/06 v3.3r English support from the babel system
 Package babel Info: Hyphen rules for 'canadian' set to \l@english
 (babel)             (\language0). Reported on input line 102.
@@ -283,20 +303,25 @@ Package babel Info: Hyphen rules for 'newzealand' set to \l@ukenglish
 )
 Package babel Info: Importing font and identification data for russian
 (babel)             from babel-ru.ini. Reported on input line 4330.
- (D:\Apps\IT\MikTex\tex/latex/babel-russian\russianb.ldf
+
+(D:\Apps\IT\MikTex\tex/latex/babel-russian\russianb.ldf
 File: russianb.ldf 2021/01/10 1.3m Russian support for the Babel system
 Language: russian 2020/09/09 1.3k Russian support for the Babel system
 Package babel Info: Making " an active character on input line 124.
 Package babel Info: Default for \cyrdash is provided on input line 163.
-)) (D:\Apps\IT\MikTex\tex/latex/tempora\tempora.sty
+))
+(D:\Apps\IT\MikTex\tex/latex/tempora\tempora.sty
 Package: tempora 2016/02/02 (msharpe) Style file for Tempora.
- (D:\Apps\IT\MikTex\tex/latex/base\fontenc.sty
+
+(D:\Apps\IT\MikTex\tex/latex/base\fontenc.sty
 Package: fontenc 2025/07/18 v2.1d Standard LaTeX package
- (D:\Apps\IT\MikTex\tex/latex/cyrillic\ot2enc.def
+
+(D:\Apps\IT\MikTex\tex/latex/cyrillic\ot2enc.def
 File: ot2enc.def 2022/06/11 v3.3b Cyrillic encoding definition file
 Now handling font encoding OT2 ...
 ... processing UTF-8 mapping file for font encoding OT2
- (D:\Apps\IT\MikTex\tex/latex/base\ot2enc.dfu
+
+(D:\Apps\IT\MikTex\tex/latex/base\ot2enc.dfu
 File: ot2enc.dfu 2022/06/07 v1.3c UTF-8 support
    defining Unicode char U+00AB (decimal 171)
    defining Unicode char U+00BB (decimal 187)
@@ -437,11 +462,13 @@ File: ot2enc.dfu 2022/06/07 v1.3c UTF-8 support
    defining Unicode char U+201C (decimal 8220)
    defining Unicode char U+201D (decimal 8221)
    defining Unicode char U+2116 (decimal 8470)
-)) (D:\Apps\IT\MikTex\tex/latex/cyrillic\t2cenc.def
+))
+(D:\Apps\IT\MikTex\tex/latex/cyrillic\t2cenc.def
 File: t2cenc.def 2023/11/07 v1.0k Cyrillic encoding definition file
 Now handling font encoding T2C ...
 ... processing UTF-8 mapping file for font encoding T2C
- (D:\Apps\IT\MikTex\tex/latex/base\t2cenc.dfu
+
+(D:\Apps\IT\MikTex\tex/latex/base\t2cenc.dfu
 File: t2cenc.dfu 2022/06/07 v1.3c UTF-8 support
    defining Unicode char U+00A4 (decimal 164)
    defining Unicode char U+00A7 (decimal 167)
@@ -631,11 +658,13 @@ File: t2cenc.dfu 2022/06/07 v1.3c UTF-8 support
    defining Unicode char U+FB04 (decimal 64260)
    defining Unicode char U+FB05 (decimal 64261)
    defining Unicode char U+FB06 (decimal 64262)
-)) (D:\Apps\IT\MikTex\tex/latex/cyrillic\t2benc.def
+))
+(D:\Apps\IT\MikTex\tex/latex/cyrillic\t2benc.def
 File: t2benc.def 2023/11/07 v1.0k Cyrillic encoding definition file
 Now handling font encoding T2B ...
 ... processing UTF-8 mapping file for font encoding T2B
- (D:\Apps\IT\MikTex\tex/latex/base\t2benc.dfu
+
+(D:\Apps\IT\MikTex\tex/latex/base\t2benc.dfu
 File: t2benc.dfu 2022/06/07 v1.3c UTF-8 support
    defining Unicode char U+00A4 (decimal 164)
    defining Unicode char U+00A7 (decimal 167)
@@ -829,11 +858,13 @@ File: t2benc.dfu 2022/06/07 v1.3c UTF-8 support
    defining Unicode char U+FB04 (decimal 64260)
    defining Unicode char U+FB05 (decimal 64261)
    defining Unicode char U+FB06 (decimal 64262)
-)) (D:\Apps\IT\MikTex\tex/latex/greek-fontenc\lgrenc.def
+))
+(D:\Apps\IT\MikTex\tex/latex/greek-fontenc\lgrenc.def
 File: lgrenc.def 2023-09-12 2.5 LGR Greek font encoding definitions
 Now handling font encoding LGR ...
 ... processing UTF-8 mapping file for font encoding LGR
- (D:\Apps\IT\MikTex\tex/latex/greek-inputenc\lgrenc.dfu
+
+(D:\Apps\IT\MikTex\tex/latex/greek-inputenc\lgrenc.dfu
 File: lgrenc.dfu 2023-03-21 1.9 UTF-8 support for Greek
    defining Unicode char U+00A8 (decimal 168)
    defining Unicode char U+00AB (decimal 171)
@@ -1184,29 +1215,41 @@ File: lgrenc.dfu 2023-03-21 1.9 UTF-8 support for Greek
    defining Unicode char U+10145 (decimal 65861)
    defining Unicode char U+10146 (decimal 65862)
    defining Unicode char U+10147 (decimal 65863)
-) (D:\Apps\IT\MikTex\tex/latex/greek-fontenc\greek-fontenc.def
+)
+(D:\Apps\IT\MikTex\tex/latex/greek-fontenc\greek-fontenc.def
 File: greek-fontenc.def 2023-09-12 2.5 Common Greek font encoding definitions
-LaTeX Encoding Info:    Ignoring declaration for text command \accACUTE (encoding LGR) on input line 251.
-LaTeX Encoding Info:    Ignoring declaration for text command \accGRAVE (encoding LGR) on input line 259.
-LaTeX Encoding Info:    Ignoring declaration for text command \accTILDE (encoding LGR) on input line 267.
-))) (D:\Apps\IT\MikTex\tex/latex/base\textcomp.sty
+LaTeX Encoding Info:    Ignoring declaration for text command \accACUTE (encodi
+ng LGR) on input line 251.
+LaTeX Encoding Info:    Ignoring declaration for text command \accGRAVE (encodi
+ng LGR) on input line 259.
+LaTeX Encoding Info:    Ignoring declaration for text command \accTILDE (encodi
+ng LGR) on input line 267.
+)))
+(D:\Apps\IT\MikTex\tex/latex/base\textcomp.sty
 Package: textcomp 2024/04/24 v2.1b Standard LaTeX package
-) (D:\Apps\IT\MikTex\tex/latex/fontaxes\fontaxes.sty
+)
+(D:\Apps\IT\MikTex\tex/latex/fontaxes\fontaxes.sty
 Package: fontaxes 2026-01-02 v2.0.2 Font selection axes (deprecated)
 Applying: [2024-11-01] Use figureversions if present on input line 74.
- (D:\Apps\IT\MikTex\tex/latex/figureversions\figureversions.sty
+
+(D:\Apps\IT\MikTex\tex/latex/figureversions\figureversions.sty
 Package: figureversions 2025-04-29 v1.0.1 Figure versions
 )
 Already applied: [0000-00-00] Fall back to v1 on input line 76.
-) (D:\Apps\IT\MikTex\tex/latex/xkeyval\xkeyval.sty
+)
+(D:\Apps\IT\MikTex\tex/latex/xkeyval\xkeyval.sty
 Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
- (D:\Apps\IT\MikTex\tex/generic/xkeyval\xkeyval.tex (D:\Apps\IT\MikTex\tex/generic/xkeyval\xkvutils.tex
+
+(D:\Apps\IT\MikTex\tex/generic/xkeyval\xkeyval.tex
+(D:\Apps\IT\MikTex\tex/generic/xkeyval\xkvutils.tex
 \XKV@toks=\toks19
 \XKV@tempa@toks=\toks20
- (D:\Apps\IT\MikTex\tex/generic/xkeyval\keyval.tex))
+
+(D:\Apps\IT\MikTex\tex/generic/xkeyval\keyval.tex))
 \XKV@depth=\count285
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
-))) (D:\Apps\IT\MikTex\tex/latex/tools\longtable.sty
+)))
+(D:\Apps\IT\MikTex\tex/latex/tools\longtable.sty
 Package: longtable 2025-10-13 v4.24 Multi-page Table package (DPC)
 \LTleft=\skip51
 \LTright=\skip52
@@ -1224,7 +1267,8 @@ Package: longtable 2025-10-13 v4.24 Multi-page Table package (DPC)
 \c@LT@tables=\count289
 \c@LT@chunks=\count290
 \LT@p@ftn=\toks21
-) (D:\Apps\IT\MikTex\tex/latex/tools\array.sty
+)
+(D:\Apps\IT\MikTex\tex/latex/tools\array.sty
 Package: array 2025/09/25 v2.6n Tabular extension package (FMi)
 \col@sep=\dimen152
 \ar@mcellbox=\box58
@@ -1233,9 +1277,11 @@ Package: array 2025/09/25 v2.6n Tabular extension package (FMi)
 \extratabsurround=\skip55
 \backup@length=\skip56
 \ar@cellbox=\box59
-) (D:\Apps\IT\MikTex\tex/latex/ltablex\ltablex.sty
+)
+(D:\Apps\IT\MikTex\tex/latex/ltablex\ltablex.sty
 Package: ltablex 2014/08/13 v1.1 Modified tabularx
- (D:\Apps\IT\MikTex\tex/latex/tools\tabularx.sty
+
+(D:\Apps\IT\MikTex\tex/latex/tools\tabularx.sty
 Package: tabularx 2023/12/11 v2.12a `tabularx' package (DPC)
 \TX@col@width=\dimen154
 \TX@old@table=\dimen155
@@ -1244,7 +1290,8 @@ Package: tabularx 2023/12/11 v2.12a `tabularx' package (DPC)
 \TX@delta=\dimen158
 \TX@cols=\count291
 \TX@ftn=\toks23
-)) (D:\Apps\IT\MikTex\tex/latex/ragged2e\ragged2e.sty
+))
+(D:\Apps\IT\MikTex\tex/latex/ragged2e\ragged2e.sty
 Package: ragged2e 2023/06/22 v3.6 ragged2e Package
 \CenteringLeftskip=\skip57
 \RaggedLeftLeftskip=\skip58
@@ -1260,22 +1307,28 @@ Package: ragged2e 2023/06/22 v3.6 ragged2e Package
 \RaggedLeftParindent=\skip68
 \RaggedRightParindent=\skip69
 \JustifyingParindent=\skip70
-) (D:\Apps\IT\MikTex\tex/latex/graphics\graphicx.sty
+)
+(D:\Apps\IT\MikTex\tex/latex/graphics\graphicx.sty
 Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
- (D:\Apps\IT\MikTex\tex/latex/graphics\graphics.sty
+
+(D:\Apps\IT\MikTex\tex/latex/graphics\graphics.sty
 Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
- (D:\Apps\IT\MikTex\tex/latex/graphics\trig.sty
+
+(D:\Apps\IT\MikTex\tex/latex/graphics\trig.sty
 Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
-) (D:\Apps\IT\MikTex\tex/latex/graphics-cfg\graphics.cfg
+)
+(D:\Apps\IT\MikTex\tex/latex/graphics-cfg\graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 106.
- (D:\Apps\IT\MikTex\tex/latex/graphics-def\pdftex.def
+
+(D:\Apps\IT\MikTex\tex/latex/graphics-def\pdftex.def
 File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen159
 \Gin@req@width=\dimen160
-) (D:\Apps\IT\MikTex\tex/latex/tools\calc.sty
+)
+(D:\Apps\IT\MikTex\tex/latex/tools\calc.sty
 Package: calc 2025/03/01 v4.3b Infix arithmetic (KKT,FJ)
 \calc@Acount=\count292
 \calc@Bcount=\count293
@@ -1287,11 +1340,14 @@ LaTeX Info: Redefining \setlength on input line 86.
 LaTeX Info: Redefining \addtolength on input line 87.
 \calc@Ccount=\count294
 \calc@Cskip=\skip73
-) (D:\Apps\IT\MikTex\tex/latex/geometry\geometry.sty
+)
+(D:\Apps\IT\MikTex\tex/latex/geometry\geometry.sty
 Package: geometry 2026/03/07 v6.0 Page Geometry
- (D:\Apps\IT\MikTex\tex/generic/iftex\ifvtex.sty
+
+(D:\Apps\IT\MikTex\tex/generic/iftex\ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
- (D:\Apps\IT\MikTex\tex/generic/iftex\iftex.sty
+
+(D:\Apps\IT\MikTex\tex/generic/iftex\iftex.sty
 Package: iftex 2024/12/12 v1.0g TeX engine tests
 ))
 \Gm@cnth=\count295
@@ -1306,19 +1362,26 @@ Package: iftex 2024/12/12 v1.0g TeX engine tests
 \Gm@layouthoffset=\dimen169
 \Gm@layoutvoffset=\dimen170
 \Gm@dimlist=\toks24
- (D:\Apps\IT\MikTex\tex/latex/geometry\geometry.cfg))
-LaTeX Font Info:    Trying to load font information for T1+Tempora-TLF on input line 21.
- (D:\Apps\IT\MikTex\tex/latex/tempora\t1tempora-tlf.fd
-File: T1Tempora-TLF.fd 2016/02/02 (autoinst) Font definitions for T1/Tempora-TLF.
+
+(D:\Apps\IT\MikTex\tex/latex/geometry\geometry.cfg))
+LaTeX Font Info:    Trying to load font information for T1+Tempora-TLF on input
+ line 21.
+
+(D:\Apps\IT\MikTex\tex/latex/tempora\t1tempora-tlf.fd
+File: T1Tempora-TLF.fd 2016/02/02 (autoinst) Font definitions for T1/Tempora-TL
+F.
 )
 LaTeX Font Info:    Font shape `T1/Tempora-TLF/m/n' will be
 (Font)              scaled to size 14.4pt on input line 21.
- (D:\Apps\IT\MikTex\tex/latex/l3backend\l3backend-pdftex.def
+
+(D:\Apps\IT\MikTex\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count298
 ) (task.aux
-LaTeX Font Info:    Trying to load font information for T2A+Tempora-TLF on input line 13.
- (D:\Apps\IT\MikTex\tex/latex/tempora\t2atempora-tlf.fd
+LaTeX Font Info:    Trying to load font information for T2A+Tempora-TLF on inpu
+t line 13.
+
+(D:\Apps\IT\MikTex\tex/latex/tempora\t2atempora-tlf.fd
 File: t2atempora-tlf.fd 2015/09/13 Font definitions for T2A/Tempora-TLF.
 )
 LaTeX Font Info:    Font shape `T2A/Tempora-TLF/m/n' will be
@@ -1345,33 +1408,42 @@ LaTeX Font Info:    ... okay on input line 21.
 LaTeX Font Info:    Checking defaults for T2A/cmr/m/n on input line 21.
 LaTeX Font Info:    ... okay on input line 21.
 LaTeX Font Info:    Checking defaults for OT2/cmr/m/n on input line 21.
-LaTeX Font Info:    Trying to load font information for OT2+cmr on input line 21.
- (D:\Apps\IT\MikTex\tex/latex/cyrillic\ot2cmr.fd
+LaTeX Font Info:    Trying to load font information for OT2+cmr on input line 2
+1.
+
+(D:\Apps\IT\MikTex\tex/latex/cyrillic\ot2cmr.fd
 File: ot2cmr.fd 2001/08/11 v3.2c Computer Modern Cyrillic font definitions
 )
 LaTeX Font Info:    ... okay on input line 21.
 LaTeX Font Info:    Checking defaults for T2C/cmr/m/n on input line 21.
-LaTeX Font Info:    Trying to load font information for T2C+cmr on input line 21.
- (D:\Apps\IT\MikTex\tex/latex/cyrillic\t2ccmr.fd
+LaTeX Font Info:    Trying to load font information for T2C+cmr on input line 2
+1.
+
+(D:\Apps\IT\MikTex\tex/latex/cyrillic\t2ccmr.fd
 File: t2ccmr.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
 )
 LaTeX Font Info:    ... okay on input line 21.
 LaTeX Font Info:    Checking defaults for T2B/cmr/m/n on input line 21.
-LaTeX Font Info:    Trying to load font information for T2B+cmr on input line 21.
- (D:\Apps\IT\MikTex\tex/latex/cyrillic\t2bcmr.fd
+LaTeX Font Info:    Trying to load font information for T2B+cmr on input line 2
+1.
+
+(D:\Apps\IT\MikTex\tex/latex/cyrillic\t2bcmr.fd
 File: t2bcmr.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
 )
 LaTeX Font Info:    ... okay on input line 21.
 LaTeX Font Info:    Checking defaults for LGR/cmr/m/n on input line 21.
-LaTeX Font Info:    Trying to load font information for LGR+cmr on input line 21.
- (D:\Apps\IT\MikTex\tex/latex/cbfonts-fd\lgrcmr.fd
+LaTeX Font Info:    Trying to load font information for LGR+cmr on input line 2
+1.
+
+(D:\Apps\IT\MikTex\tex/latex/cbfonts-fd\lgrcmr.fd
 File: lgrcmr.fd 2017/07/29 v1.2 Greek European Computer Regular
 )
 LaTeX Font Info:    ... okay on input line 21.
 LaTeX Info: Redefining \th on input line 21.
 \c@mv@tabular=\count299
 \c@mv@boldtabular=\count300
- (D:\Apps\IT\MikTex\tex/context/base/mkii\supp-pdf.mkii
+
+(D:\Apps\IT\MikTex\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count301
 \scratchdimen=\dimen171
@@ -1386,8 +1458,10 @@ LaTeX Info: Redefining \th on input line 21.
 \everyMPtoPDFconversion=\toks26
 ) (D:\Apps\IT\MikTex\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
-Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
- (D:\Apps\IT\MikTex\tex/latex/00miktex\epstopdf-sys.cfg
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(D:\Apps\IT\MikTex\tex/latex/00miktex\epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 *geometry* driver: auto-detecting
@@ -1439,21 +1513,23 @@ LaTeX Font Info:    Font shape `T2A/Tempora-TLF/b/n' will be
 
 ignored: Infinite glue shrinkage found in box being split [1
 
-{C:/Users/ivans/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{D:/Apps/IT/MikTex/fonts/enc/dvips/tempora/t2a-tempora.enc}] [2] (task.aux)
+{C:/Users/ivans/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{D:/Apps/IT/Mi
+kTex/fonts/enc/dvips/tempora/t2a-tempora.enc}] [2] (task.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 6863 strings out of 467867
- 115434 string characters out of 5431321
- 525468 words of memory out of 5000000
+ 6861 strings out of 467867
+ 115269 string characters out of 5431321
+ 525467 words of memory out of 5000000
  35632 multiletter control sequences out of 15000+600000
  651693 words of font info for 56 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 63i,9n,73p,514b,310s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<D:/Apps/IT/MikTex/fonts/type1/public/tempora/Tempora-Bold.pfb><D:/Apps/IT/MikTex/fonts/type1/public/tempora/Tempora-Regular.pfb>
+ 63i,9n,73p,461b,310s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<D:/Apps/IT/MikTex/fonts/type1/public/tempora/Tempora-Bold.pfb><D:/Apps/IT/Mi
+kTex/fonts/type1/public/tempora/Tempora-Regular.pfb>
 Output written on task.pdf (2 pages, 70392 bytes).
 PDF statistics:
  20 PDF objects out of 1000 (max. 8388607)
