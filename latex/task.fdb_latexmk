@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1776171178.03488 "c:/Users/ivans/OneDrive/Desktop/Unic/Web_CP_2026/latex/task.tex" "task.pdf" "task" 1776171179.05815 0
-  "C:/Users/ivans/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1776171029 89659 ef23699ec536309d879afb5ac5b9505e ""
+["pdflatex"] 1777275235.5115 "c:/Users/ivans/OneDrive/Desktop/Unic/Web_CP_2026/latex/task.tex" "task.pdf" "task" 1777275237.16361 0
+  "C:/Users/ivans/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1776937777 89659 ef23699ec536309d879afb5ac5b9505e ""
   "C:/Users/ivans/AppData/Local/MiKTeX/fonts/tfm/lh/lh-t2a/larm1440.tfm" 1776170872 3256 3daaa33cf35cf3f354983aa3214ecd7f ""
   "C:/Users/ivans/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1776170823 13320862 88b92287ba42b3d5b88eae52991b8a3e ""
   "D:/Apps/IT/MikTex/fonts/enc/dvips/tempora/t2a-tempora.enc" 1442176730 3023 c4581b906237349b927d8aa9ff8a2b60 ""
@@ -75,9 +75,9 @@
   "D:/Apps/IT/MikTex/tex/latex/tools/longtable.sty" 1761901070 16014 dfa4b4d4e04a78a3f05a90c19711737a ""
   "D:/Apps/IT/MikTex/tex/latex/tools/tabularx.sty" 1761901070 7243 a2c17f18e2c9b702b84fad03d5f9c78b ""
   "D:/Apps/IT/MikTex/tex/latex/xkeyval/xkeyval.sty" 1656236919 4937 4ce600ce9bd4ec84d0250eb6892fcf4f ""
-  "c:/Users/ivans/OneDrive/Desktop/Unic/Web_CP_2026/latex/task.tex" 1776171177 9143 72ffbb2710f5c5e99a7b4f903be2e870 ""
-  "task.aux" 1776171178 677 368f36bda4816309eb623241e447ac64 "pdflatex"
-  "task.tex" 1776171177 9143 72ffbb2710f5c5e99a7b4f903be2e870 ""
+  "c:/Users/ivans/OneDrive/Desktop/Unic/Web_CP_2026/latex/task.tex" 1776939294 9295 72ffbb2710f5c5e99a7b4f903be2e870 ""
+  "task.aux" 1777275236 677 368f36bda4816309eb623241e447ac64 "pdflatex"
+  "task.tex" 1776939294 9295 72ffbb2710f5c5e99a7b4f903be2e870 ""
   (generated)
   "task.aux"
   "task.log"
