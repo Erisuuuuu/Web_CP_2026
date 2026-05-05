@@ -1,0 +1,136 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="l9xkakGmR9uhAxbDh2F4" name="Page-1">
+    <mxGraphModel dx="2934" dy="1103" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="820" pageHeight="760" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="100" parent="1" style="swimlane;startSize=30;fontStyle=1;fontSize=13;fillColor=#dae8fc;strokeColor=#6c8ebf;align=center;collapsible=0;" value="users  [Supabase Auth]" vertex="1">
+          <mxGeometry height="108" width="290" x="130" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="101" connectable="0" parent="100" style="text;strokeColor=none;fillColor=#fff2cc;align=left;spacingLeft=8;fontSize=11;fontStyle=1;" value="PK  id: UUID" vertex="1">
+          <mxGeometry height="26" width="290" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="102" connectable="0" parent="100" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     email: VARCHAR(255) UNIQUE NOT NULL" vertex="1">
+          <mxGeometry height="26" width="290" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="104" connectable="0" parent="100" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     created_at: TIMESTAMP DEFAULT NOW()" vertex="1">
+          <mxGeometry height="26" width="290" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="110" parent="1" style="swimlane;startSize=30;fontStyle=1;fontSize=13;fillColor=#d5e8d4;strokeColor=#82b366;align=center;collapsible=0;" value="profiles" vertex="1">
+          <mxGeometry height="212" width="290" x="130" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="111" connectable="0" parent="110" style="text;strokeColor=none;fillColor=#fff2cc;align=left;spacingLeft=8;fontSize=11;fontStyle=1;" value="PK  id: UUID" vertex="1">
+          <mxGeometry height="26" width="290" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="112" connectable="0" parent="110" style="text;strokeColor=none;fillColor=#d5e8d4;align=left;spacingLeft=8;fontSize=11;fontStyle=2;" value="FK  user_id: UUID → users" vertex="1">
+          <mxGeometry height="26" width="290" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="113" connectable="0" parent="110" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     name: VARCHAR(100) NOT NULL" vertex="1">
+          <mxGeometry height="26" width="290" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="114" connectable="0" parent="110" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     bio: TEXT" vertex="1">
+          <mxGeometry height="26" width="290" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="115" connectable="0" parent="110" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     cefr_level: VARCHAR(2)" vertex="1">
+          <mxGeometry height="26" width="290" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="116" connectable="0" parent="110" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     avatar_url: TEXT" vertex="1">
+          <mxGeometry height="26" width="290" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="117" connectable="0" parent="110" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     role: VARCHAR(20)  member / admin" vertex="1">
+          <mxGeometry height="26" width="290" y="186" as="geometry" />
+        </mxCell>
+        <mxCell id="120" parent="1" style="swimlane;startSize=30;fontStyle=1;fontSize=13;fillColor=#ffe6cc;strokeColor=#d6b656;align=center;collapsible=0;" value="clubs" vertex="1">
+          <mxGeometry height="186" width="290" x="510" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="121" connectable="0" parent="120" style="text;strokeColor=none;fillColor=#fff2cc;align=left;spacingLeft=8;fontSize=11;fontStyle=1;" value="PK  id: UUID" vertex="1">
+          <mxGeometry height="26" width="290" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="122" connectable="0" parent="120" style="text;strokeColor=none;fillColor=#ffe6cc;align=left;spacingLeft=8;fontSize=11;fontStyle=2;" value="FK  owner_id: UUID → users" vertex="1">
+          <mxGeometry height="26" width="290" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="123" connectable="0" parent="120" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     name: VARCHAR(200) NOT NULL" vertex="1">
+          <mxGeometry height="26" width="290" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="124" connectable="0" parent="120" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     description: TEXT" vertex="1">
+          <mxGeometry height="26" width="290" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="125" connectable="0" parent="120" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     is_active: BOOLEAN DEFAULT TRUE" vertex="1">
+          <mxGeometry height="26" width="290" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="126" connectable="0" parent="120" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     created_at: TIMESTAMP DEFAULT NOW()" vertex="1">
+          <mxGeometry height="26" width="290" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="130" parent="1" style="swimlane;startSize=30;fontStyle=1;fontSize=13;fillColor=#ffe6cc;strokeColor=#d6b656;align=center;collapsible=0;" value="meetings" vertex="1">
+          <mxGeometry height="238" width="290" x="510" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="131" connectable="0" parent="130" style="text;strokeColor=none;fillColor=#fff2cc;align=left;spacingLeft=8;fontSize=11;fontStyle=1;" value="PK  id: UUID" vertex="1">
+          <mxGeometry height="26" width="290" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="132" connectable="0" parent="130" style="text;strokeColor=none;fillColor=#ffe6cc;align=left;spacingLeft=8;fontSize=11;fontStyle=2;" value="FK  club_id: UUID → clubs" vertex="1">
+          <mxGeometry height="26" width="290" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="133" connectable="0" parent="130" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     title: VARCHAR(200) NOT NULL" vertex="1">
+          <mxGeometry height="26" width="290" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="134" connectable="0" parent="130" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     date: TIMESTAMP NOT NULL" vertex="1">
+          <mxGeometry height="26" width="290" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="136" connectable="0" parent="130" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     location: TEXT" vertex="1">
+          <mxGeometry height="26" width="290" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="137" connectable="0" parent="130" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     seats_total: INT CHECK &gt; 0" vertex="1">
+          <mxGeometry height="26" width="290" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="138" connectable="0" parent="130" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     cefr_level: VARCHAR(2)" vertex="1">
+          <mxGeometry height="26" width="290" y="186" as="geometry" />
+        </mxCell>
+        <mxCell id="139" connectable="0" parent="130" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     created_at: TIMESTAMP DEFAULT NOW()" vertex="1">
+          <mxGeometry height="26" width="290" y="212" as="geometry" />
+        </mxCell>
+        <mxCell id="140" parent="1" style="swimlane;startSize=30;fontStyle=1;fontSize=13;fillColor=#e1d5e7;strokeColor=#9673a6;align=center;collapsible=0;" value="registrations" vertex="1">
+          <mxGeometry height="134" width="290" x="130" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="141" connectable="0" parent="140" style="text;strokeColor=none;fillColor=#fff2cc;align=left;spacingLeft=8;fontSize=11;fontStyle=1;" value="PK  id: UUID" vertex="1">
+          <mxGeometry height="26" width="290" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="142" connectable="0" parent="140" style="text;strokeColor=none;fillColor=#e1d5e7;align=left;spacingLeft=8;fontSize=11;fontStyle=2;" value="FK  user_id: UUID → users" vertex="1">
+          <mxGeometry height="26" width="290" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="143" connectable="0" parent="140" style="text;strokeColor=none;fillColor=#e1d5e7;align=left;spacingLeft=8;fontSize=11;fontStyle=2;" value="FK  meeting_id: UUID → meetings" vertex="1">
+          <mxGeometry height="26" width="290" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="144" connectable="0" parent="140" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;fontSize=11;" value="     registered_at: TIMESTAMP DEFAULT NOW()" vertex="1">
+          <mxGeometry height="26" width="290" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="200" edge="1" parent="1" source="100" style="edgeStyle=orthogonalEdgeStyle;html=1;startArrow=ERone;startFill=0;endArrow=ERone;endFill=0;strokeColor=#6c8ebf;strokeWidth=2;" value="1        1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="20" y="324" />
+              <mxPoint x="20" y="90" />
+            </Array>
+            <mxPoint x="130" y="90" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="201" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#d6b656;strokeWidth=2;" value="1        N">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="420" y="310" as="sourcePoint" />
+            <mxPoint x="510" y="311" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="202" edge="1" parent="1" source="120" style="edgeStyle=orthogonalEdgeStyle;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#d6b656;strokeWidth=2;" target="130" value="1        N">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="203" edge="1" parent="1" source="100" style="edgeStyle=orthogonalEdgeStyle;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#9673a6;strokeWidth=2;" target="140" value="1        N">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="204" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;strokeColor=#9673a6;strokeWidth=2;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="140" value="1        N">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510" y="540" as="sourcePoint" />
+            <mxPoint x="420" y="530" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
