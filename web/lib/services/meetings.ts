@@ -1,0 +1,192 @@
+import { createClient } from '@/lib/supabase/server'
+import type { Meeting, MeetingWithDetails, Result } from '@/lib/types'
+import type { MeetingInput } from '@/lib/validators/meeting'
+import type { MeetingFilter } from '@/lib/validators/meeting'
+
+export async function getMeetings(
+  filter?: MeetingFilter
+): Promise<Result<MeetingWithDetails[]>> {
+  const supabase = await createClient()
+
+  let query = supabase
+    .from('meetings')
+    .select(`
+      *,
+      club:clubs!meetings_club_id_fkey(id, name),
+      organizer:clubs!meetings_club_id_fkey(
+        owner:profiles!profiles_user_id_fkey(id, name, avatar_url)
+      ),
+      registrations(count)
+    `)
+    .limit(20)
+    .order('date', { ascending: true })
+
+  if (filter?.cefr) {
+    query = query.eq('cefr_level', filter.cefr)
+  }
+  if (filter?.from) {
+    query = query.gte('date', filter.from)
+  }
+  if (filter?.to) {
+    query = query.lte('date', filter.to)
+  }
+
+  const { data, error } = await query
+
+  if (error) return { data: null, error: error.message }
+
+  const meetings: MeetingWithDetails[] = (data ?? []).map((row) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const r = row as any
+    return {
+      id: r.id,
+      club_id: r.club_id,
+      title: r.title,
+      date: r.date,
+      location: r.location,
+      seats_total: r.seats_total,
+      cefr_level: r.cefr_level,
+      created_at: r.created_at,
+      club: {
+        id: r.club?.id ?? '',
+        name: r.club?.name ?? '',
+      },
+      organizer: {
+        id: r.organizer?.owner?.id ?? '',
+        name: r.organizer?.owner?.name ?? '',
+        avatar_url: r.organizer?.owner?.avatar_url ?? null,
+      },
+      seats_taken: r.registrations?.[0]?.count ?? 0,
+    }
+  })
+
+  return { data: meetings, error: null }
+}
+
+export async function getMeeting(
+  meetingId: string
+): Promise<Result<MeetingWithDetails>> {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('meetings')
+    .select(`
+      *,
+      club:clubs!meetings_club_id_fkey(id, name),
+      organizer:clubs!meetings_club_id_fkey(
+        owner:profiles!profiles_user_id_fkey(id, name, avatar_url)
+      ),
+      registrations(count)
+    `)
+    .eq('id', meetingId)
+    .single()
+
+  if (error) return { data: null, error: error.message }
+  if (!data) return { data: null, error: 'Встреча не найдена' }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const r = data as any
+  const meeting: MeetingWithDetails = {
+    id: r.id,
+    club_id: r.club_id,
+    title: r.title,
+    date: r.date,
+    location: r.location,
+    seats_total: r.seats_total,
+    cefr_level: r.cefr_level,
+    created_at: r.created_at,
+    club: {
+      id: r.club?.id ?? '',
+      name: r.club?.name ?? '',
+    },
+    organizer: {
+      id: r.organizer?.owner?.id ?? '',
+      name: r.organizer?.owner?.name ?? '',
+      avatar_url: r.organizer?.owner?.avatar_url ?? null,
+    },
+    seats_taken: r.registrations?.[0]?.count ?? 0,
+  }
+
+  return { data: meeting, error: null }
+}
+
+export async function createMeeting(
+  clubId: string,
+  userId: string,
+  input: MeetingInput
+): Promise<Result<Meeting>> {
+  const supabase = await createClient()
+
+  // Проверяем, что пользователь — owner клуба
+  const { data: club, error: clubError } = await supabase
+    .from('clubs')
+    .select('id')
+    .eq('id', clubId)
+    .eq('owner_id', userId)
+    .single()
+
+  if (clubError || !club) {
+    return { data: null, error: 'Клуб не найден или нет прав' }
+  }
+
+  const { data, error } = await supabase
+    .from('meetings')
+    .insert({
+      club_id: clubId,
+      title: input.title,
+      date: input.date,
+      location: input.location ?? null,
+      seats_total: input.seats_total,
+      cefr_level: input.cefr_level,
+    })
+    .select()
+    .single()
+
+  if (error) return { data: null, error: error.message }
+  if (!data) return { data: null, error: 'Не удалось создать встречу' }
+
+  return { data: data as Meeting, error: null }
+}
+
+export async function updateMeeting(
+  meetingId: string,
+  userId: string,
+  input: MeetingInput
+): Promise<Result<Meeting>> {
+  const supabase = await createClient()
+
+  // Проверяем, что пользователь — owner клуба этой встречи
+  const { data: meeting, error: meetingError } = await supabase
+    .from('meetings')
+    .select('id, club:clubs!meetings_club_id_fkey(owner_id)')
+    .eq('id', meetingId)
+    .single()
+
+  if (meetingError || !meeting) {
+    return { data: null, error: 'Встреча не найдена' }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const club = (meeting as any).club
+  if (club?.owner_id !== userId) {
+    return { data: null, error: 'Нет прав на редактирование' }
+  }
+
+  const { data, error } = await supabase
+    .from('meetings')
+    .update({
+      title: input.title,
+      date: input.date,
+      location: input.location ?? null,
+      seats_total: input.seats_total,
+      cefr_level: input.cefr_level,
+    })
+    .eq('id', meetingId)
+    .select()
+    .single()
+
+  if (error) return { data: null, error: error.message }
+  if (!data) return { data: null, error: 'Не удалось обновить встречу' }
+
+  return { data: data as Meeting, error: null }
+}
