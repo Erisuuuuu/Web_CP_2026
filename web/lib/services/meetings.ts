@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import type { Meeting, MeetingWithDetails, Result } from '@/lib/types'
+import type { Meeting, MeetingRow, MeetingWithDetails, Result } from '@/lib/types'
 import type { MeetingInput } from '@/lib/validators/meeting'
 import type { MeetingFilter } from '@/lib/validators/meeting'
 
@@ -189,4 +189,36 @@ export async function updateMeeting(
   if (!data) return { data: null, error: 'Не удалось обновить встречу' }
 
   return { data: data as Meeting, error: null }
+}
+
+export async function getMeetingsByClub(
+  clubId: string
+): Promise<Result<MeetingRow[]>> {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('meetings')
+    .select(`
+      *,
+      registrations(count)
+    `)
+    .eq('club_id', clubId)
+    .order('date', { ascending: true })
+
+  if (error) return { data: null, error: error.message }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const rows: MeetingRow[] = (data ?? []).map((r: any) => ({
+    id: r.id as string,
+    club_id: r.club_id as string,
+    title: r.title as string,
+    date: r.date as string,
+    location: (r.location as string | null) ?? null,
+    seats_total: r.seats_total as number,
+    cefr_level: r.cefr_level ?? null,
+    created_at: r.created_at as string,
+    seats_taken: (r.registrations?.[0]?.count as number) ?? 0,
+  }))
+
+  return { data: rows, error: null }
 }
