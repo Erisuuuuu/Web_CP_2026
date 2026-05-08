@@ -88,5 +88,5 @@ export async function createMeetingAction(clubId: string, formData: FormData) {
     return { error: result.error }
   }
 
-  redirect(`/meetings/${result.data.id}`)
+  redirect(`/meetings/${result.data!.id}`)
 }

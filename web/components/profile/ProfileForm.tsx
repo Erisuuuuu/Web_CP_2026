@@ -1,7 +1,7 @@
 'use client'
 
 import { useTransition, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { profileSchema, type ProfileInput } from '@/lib/validators/profile'
 import { updateProfileAction } from '@/app/(app)/profile/actions'
@@ -25,13 +25,13 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
   } = useForm<ProfileInput>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: profile.name,
+      name: profile.name ?? '',
       bio: profile.bio ?? '',
       cefr_level: profile.cefr_level ?? undefined,
     },
   })
 
-  const onSubmit = (data: ProfileInput) => {
+  const onSubmit: SubmitHandler<ProfileInput> = (data) => {
     setSuccessMessage(null)
     const formData = new FormData()
     formData.set('name', data.name)

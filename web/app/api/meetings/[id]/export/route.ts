@@ -31,7 +31,7 @@ export async function GET(
   }
 
   // 3. Генерируем CSV
-  const rows: CsvRow[] = result.data.map((reg) => ({
+  const rows: CsvRow[] = result.data!.map((reg) => ({
     name: reg.profile.name ?? '',
     email: reg.email,
     cefr_level: reg.profile.cefr_level ?? '',

@@ -29,7 +29,7 @@ export default async function MeetingsPage({ searchParams }: PageProps) {
     )
   }
 
-  const meetings = result.data
+  const meetings = result.data!
 
   return (
     <div>

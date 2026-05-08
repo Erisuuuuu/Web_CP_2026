@@ -9,7 +9,7 @@ export const meetingSchema = z.object({
   date: z.string().min(1, 'Дата обязательна'),
   location: z.string().optional(),
   cefr_level: z.enum(cefrLevels, { error: 'Выберите уровень CEFR' }),
-  seats_total: z.coerce.number().int().min(1, 'Минимум 1 место'),
+  seats_total: z.number().int().min(1, 'Минимум 1 место'),
 })
 
 export type MeetingInput = z.infer<typeof meetingSchema>

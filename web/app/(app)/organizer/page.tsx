@@ -33,7 +33,7 @@ export default async function OrganizerPage({ searchParams }: PageProps) {
     )
   }
 
-  const clubs = clubsResult.data
+  const clubs = clubsResult.data!
 
   // Для каждого клуба получаем встречи
   const clubsWithMeetings = await Promise.all(

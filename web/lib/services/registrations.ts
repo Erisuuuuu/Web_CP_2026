@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import type { Result, RegistrationResult, RegistrationWithProfile } from '@/lib/types'
+import type { Result, RegistrationResult, RegistrationWithProfile, CefrLevel } from '@/lib/types'
 
 // ─── Тип результата записи ────────────────────────────────────────────────────
 // RegistrationResult = { ok: true } | { ok: false; reason: 'full' | 'duplicate' | 'inactive' | 'forbidden' }
@@ -177,7 +177,7 @@ export async function getMeetingRegistrations(
     registered_at: r.registered_at as string,
     profile: {
       name: (r.profile?.name as string | null) ?? null,
-      cefr_level: (r.profile?.cefr_level as string | null) ?? null,
+      cefr_level: (r.profile?.cefr_level as CefrLevel | null) ?? null,
     },
     email: emailMap[r.user_id as string] ?? '',
   }))

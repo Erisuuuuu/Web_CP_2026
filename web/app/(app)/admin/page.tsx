@@ -18,7 +18,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   if (!user) redirect('/login')
 
   const profileResult = await getProfile(user.id)
-  if (profileResult.error || profileResult.data.role !== 'admin') {
+  if (profileResult.error || profileResult.data?.role !== 'admin') {
     redirect('/')
   }
 
@@ -34,7 +34,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
   const filteredUsers = search
     ? users.filter((u) =>
-        u.name.toLowerCase().includes(search.toLowerCase())
+        (u.name ?? '').toLowerCase().includes(search.toLowerCase())
       )
     : users
 
@@ -118,7 +118,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                       </td>
                       <td className="px-4 py-3 text-right">
                         {!isSelf && !isOtherAdmin && !isBlocked && (
-                          <BlockUserButton userId={u.user_id} userName={u.name} />
+                          <BlockUserButton userId={u.user_id} userName={u.name ?? ''} />
                         )}
                       </td>
                     </tr>

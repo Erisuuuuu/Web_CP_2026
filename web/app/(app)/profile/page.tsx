@@ -19,7 +19,7 @@ export default async function ProfilePage() {
     )
   }
 
-  const profile = result.data
+  const profile = result.data!
   const initials = profile.name
     ? profile.name.slice(0, 2).toUpperCase()
     : user.email?.slice(0, 2).toUpperCase() ?? '??'
