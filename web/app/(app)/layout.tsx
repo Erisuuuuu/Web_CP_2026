@@ -9,11 +9,13 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   let initials = ''
   let displayName = ''
+  let avatarUrl: string | null = null
   if (user) {
     const profileResult = await getProfile(user.id)
     const name = profileResult.data?.name ?? user.email ?? ''
     displayName = name.split(' ')[0]
     initials = name.slice(0, 2).toUpperCase()
+    avatarUrl = profileResult.data?.avatar_url ?? null
   }
 
   return (
@@ -45,8 +47,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             {user ? (
               <>
                 <Link href="/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: '#1c1917' }}>
-                    {initials || '?'}
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white overflow-hidden" style={{ backgroundColor: '#1c1917' }}>
+                    {avatarUrl
+                      ? <img src={avatarUrl} alt="avatar" className="w-full h-full object-cover" />
+                      : (initials || '?')}
                   </div>
                   <span className="text-sm font-medium hidden sm:block" style={{ color: '#1c1917' }}>{displayName}</span>
                 </Link>
