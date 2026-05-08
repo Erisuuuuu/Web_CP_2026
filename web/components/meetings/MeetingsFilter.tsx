@@ -7,55 +7,100 @@ import type { CefrLevel } from '@/lib/types'
 const CEFR_LEVELS: CefrLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
 
 interface MeetingsFilterProps {
-  defaultValue?: CefrLevel
+  defaultCefr?: CefrLevel
+  defaultFrom?: string
+  defaultTo?: string
 }
 
-export default function MeetingsFilter({ defaultValue }: MeetingsFilterProps) {
+export default function MeetingsFilter({ defaultCefr, defaultFrom, defaultTo }: MeetingsFilterProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [cefr, setCefr] = useState<CefrLevel | ''>( defaultValue ?? '')
+  const [cefr, setCefr] = useState<CefrLevel | ''>(defaultCefr ?? '')
+  const [from, setFrom] = useState(defaultFrom ?? '')
+  const [to, setTo] = useState(defaultTo ?? '')
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-
+  function apply(newCefr: CefrLevel | '', newFrom: string, newTo: string) {
     const params = new URLSearchParams(searchParams.toString())
-
-    if (cefr) {
-      params.set('cefr', cefr)
-    } else {
-      params.delete('cefr')
-    }
-
+    if (newCefr) params.set('cefr', newCefr); else params.delete('cefr')
+    if (newFrom) params.set('from', newFrom); else params.delete('from')
+    if (newTo) params.set('to', newTo); else params.delete('to')
     router.push(`?${params.toString()}`)
   }
 
+  function handleCefrToggle(level: CefrLevel) {
+    const next = cefr === level ? '' : level
+    setCefr(next)
+    apply(next, from, to)
+  }
+
+  function handleReset() {
+    setCefr('')
+    setFrom('')
+    setTo('')
+    router.push('?')
+  }
+
+  const labelStyle = { color: '#78716c', fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.05em' }
+  const inputStyle = { border: '1px solid #d6cdc0', color: '#1c1917', backgroundColor: '#fff', borderRadius: '0.5rem', padding: '0.375rem 0.5rem', fontSize: '0.8rem', width: '100%', outline: 'none' }
+
   return (
-    <form onSubmit={handleSubmit} className="mb-6 flex items-end gap-3">
-      <div className="flex flex-col gap-1">
-        <label htmlFor="cefr-filter" className="text-sm font-medium text-gray-700">
-          Уровень CEFR
-        </label>
-        <select
-          id="cefr-filter"
-          value={cefr}
-          onChange={(e) => setCefr(e.target.value as CefrLevel | '')}
-          className="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-        >
-          <option value="">Все уровни</option>
+    <div className="space-y-5">
+      <p style={{ ...labelStyle, fontSize: '0.75rem' }}>Фильтры</p>
+
+      {/* CEFR */}
+      <div>
+        <p className="mb-2" style={labelStyle}>Уровень CEFR</p>
+        <div className="flex flex-wrap gap-1.5">
           {CEFR_LEVELS.map((level) => (
-            <option key={level} value={level}>
+            <button
+              key={level}
+              type="button"
+              onClick={() => handleCefrToggle(level)}
+              className="rounded-full px-2.5 py-0.5 text-xs font-medium border transition-colors"
+              style={cefr === level
+                ? { backgroundColor: '#1c1917', color: '#fff', borderColor: '#1c1917' }
+                : { backgroundColor: '#fff', color: '#57534e', borderColor: '#d6cdc0' }
+              }
+            >
               {level}
-            </option>
+            </button>
           ))}
-        </select>
+        </div>
       </div>
 
+      {/* Date from */}
+      <div>
+        <label className="block mb-1" style={labelStyle}>Дата от</label>
+        <input
+          type="date"
+          value={from}
+          onChange={(e) => setFrom(e.target.value)}
+          onBlur={() => apply(cefr, from, to)}
+          style={inputStyle}
+        />
+      </div>
+
+      {/* Date to */}
+      <div>
+        <label className="block mb-1" style={labelStyle}>Дата до</label>
+        <input
+          type="date"
+          value={to}
+          onChange={(e) => setTo(e.target.value)}
+          onBlur={() => apply(cefr, from, to)}
+          style={inputStyle}
+        />
+      </div>
+
+      {/* Reset */}
       <button
-        type="submit"
-        className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        type="button"
+        onClick={handleReset}
+        className="w-full rounded-lg py-1.5 text-sm border transition-colors hover:bg-stone-50"
+        style={{ borderColor: '#d6cdc0', color: '#78716c' }}
       >
-        Фильтровать
+        Сбросить фильтры
       </button>
-    </form>
+    </div>
   )
 }

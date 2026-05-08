@@ -5,17 +5,18 @@ interface ProgressBarProps {
 
 export function ProgressBar({ taken, total }: ProgressBarProps) {
   const percent = total > 0 ? Math.min(Math.round((taken / total) * 100), 100) : 0
+  const isFull = taken >= total
 
   return (
-    <div className="space-y-1">
-      <div className="h-2 w-full rounded-full bg-gray-200">
+    <div>
+      <div className="h-1.5 w-full rounded-full mb-1" style={{ backgroundColor: '#e5ddd0' }}>
         <div
-          className="h-2 rounded-full bg-blue-500 transition-all"
-          style={{ width: `${percent}%` }}
+          className="h-1.5 rounded-full transition-all"
+          style={{ width: `${percent}%`, backgroundColor: isFull ? '#dc2626' : '#1c1917' }}
         />
       </div>
-      <p className="text-sm text-muted-foreground">
-        {taken} из {total} мест
+      <p className="text-xs" style={{ color: '#78716c' }}>
+        {taken} / {total} мест
       </p>
     </div>
   )

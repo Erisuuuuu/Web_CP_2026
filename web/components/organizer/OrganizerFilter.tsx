@@ -24,16 +24,15 @@ export function OrganizerFilter({ current }: OrganizerFilterProps) {
   }
 
   return (
-    <div className="flex gap-1 rounded-lg border p-1">
+    <div className="flex gap-1 rounded-lg border p-1" style={{ borderColor: '#e5ddd0' }}>
       {FILTERS.map((f) => (
         <button
           key={f.value}
           onClick={() => handleChange(f.value)}
-          className={
-            'rounded px-3 py-1 text-sm transition-colors ' +
-            (current === f.value
-              ? 'bg-blue-600 text-white'
-              : 'text-gray-600 hover:bg-gray-100')
+          className="rounded px-3 py-1.5 text-sm font-medium transition-colors"
+          style={current === f.value
+            ? { backgroundColor: '#1c1917', color: '#fff' }
+            : { color: '#57534e' }
           }
         >
           {f.label}

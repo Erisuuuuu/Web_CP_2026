@@ -11,7 +11,6 @@ interface PageProps {
 export default async function MeetingsPage({ searchParams }: PageProps) {
   const params = await searchParams
 
-  // Парсим query-параметры, игнорируем невалидные
   const raw = {
     cefr: typeof params.cefr === 'string' ? params.cefr : undefined,
     from: typeof params.from === 'string' ? params.from : undefined,
@@ -34,20 +33,30 @@ export default async function MeetingsPage({ searchParams }: PageProps) {
   const meetings = result.data!
 
   return (
-    <div>
-      <h1 className="mb-6 text-2xl font-bold text-gray-900">Встречи</h1>
+    <div className="flex gap-8">
+      {/* Sidebar filter */}
+      <aside className="w-52 shrink-0">
+        <MeetingsFilter
+          defaultCefr={filter.cefr as CefrLevel | undefined}
+          defaultFrom={filter.from}
+          defaultTo={filter.to}
+        />
+      </aside>
 
-      <MeetingsFilter defaultValue={filter.cefr as CefrLevel | undefined} />
+      {/* Main content */}
+      <div className="flex-1 min-w-0">
+        <h1 className="mb-6 text-2xl font-bold" style={{ color: '#1c1917' }}>Каталог встреч</h1>
 
-      {meetings.length === 0 ? (
-        <p className="text-gray-500">Встреч пока нет.</p>
-      ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {meetings.map((meeting) => (
-            <MeetingCard key={meeting.id} meeting={meeting} />
-          ))}
-        </div>
-      )}
+        {meetings.length === 0 ? (
+          <p style={{ color: '#78716c' }}>Встреч пока нет.</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {meetings.map((meeting) => (
+              <MeetingCard key={meeting.id} meeting={meeting} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

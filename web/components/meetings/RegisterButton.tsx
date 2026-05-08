@@ -22,7 +22,7 @@ export function RegisterButton({ meetingId, isRegistered, isFull }: RegisterButt
       } else {
         const reasons: Record<string, string> = {
           full: 'Мест больше нет',
-          duplicate: 'Вы уже записаны на эту встречу',
+          duplicate: 'Вы уже записаны',
           inactive: 'Клуб неактивен',
           forbidden: 'Действие запрещено',
         }
@@ -38,22 +38,16 @@ export function RegisterButton({ meetingId, isRegistered, isFull }: RegisterButt
       if (result.ok) {
         setMessage({ text: 'Запись отменена', ok: true })
       } else {
-        setMessage({ text: 'Не удалось отменить запись', ok: false })
+        setMessage({ text: 'Не удалось отменить', ok: false })
       }
     })
   }
 
   if (isFull && !isRegistered) {
     return (
-      <div>
-        <button
-          type="button"
-          disabled
-          className="w-full rounded-lg bg-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-500 cursor-not-allowed"
-        >
-          Мест нет
-        </button>
-      </div>
+      <button type="button" disabled className="w-full rounded-lg py-2.5 text-sm font-semibold cursor-not-allowed" style={{ backgroundColor: '#e5ddd0', color: '#a8997c' }}>
+        Мест нет
+      </button>
     )
   }
 
@@ -64,14 +58,13 @@ export function RegisterButton({ meetingId, isRegistered, isFull }: RegisterButt
           type="button"
           onClick={handleUnregister}
           disabled={isPending}
-          className="w-full rounded-lg border border-red-300 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="w-full rounded-lg border py-2.5 text-sm font-semibold transition-colors disabled:opacity-50"
+          style={{ borderColor: '#fca5a5', color: '#dc2626', backgroundColor: '#fff' }}
         >
           {isPending ? 'Отменяем...' : 'Отменить запись'}
         </button>
         {message && (
-          <p className={`mt-2 text-center text-xs ${message.ok ? 'text-green-600' : 'text-red-500'}`}>
-            {message.text}
-          </p>
+          <p className={`mt-2 text-center text-xs ${message.ok ? 'text-green-600' : 'text-red-500'}`}>{message.text}</p>
         )}
       </div>
     )
@@ -83,14 +76,13 @@ export function RegisterButton({ meetingId, isRegistered, isFull }: RegisterButt
         type="button"
         onClick={handleRegister}
         disabled={isPending}
-        className="w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="w-full rounded-lg py-2.5 text-sm font-semibold text-white transition-colors disabled:opacity-50"
+        style={{ backgroundColor: '#1c1917' }}
       >
         {isPending ? 'Записываемся...' : 'Записаться'}
       </button>
       {message && (
-        <p className={`mt-2 text-center text-xs ${message.ok ? 'text-green-600' : 'text-red-500'}`}>
-          {message.text}
-        </p>
+        <p className={`mt-2 text-center text-xs ${message.ok ? 'text-green-600' : 'text-red-500'}`}>{message.text}</p>
       )}
     </div>
   )

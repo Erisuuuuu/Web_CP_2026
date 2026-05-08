@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { getMeeting } from '@/lib/services/meetings'
-import { formatSeats } from '@/lib/utils/formatters'
 import { createClient } from '@/lib/supabase/server'
 import { RegisterButton } from '@/components/meetings/RegisterButton'
 
@@ -20,15 +19,10 @@ export default async function MeetingPage({ params }: PageProps) {
   }
 
   const meeting = result.data
-  const formattedDate = format(new Date(meeting.date), 'dd MMMM yyyy, HH:mm', {
-    locale: ru,
-  })
+  const formattedDate = format(new Date(meeting.date), 'dd MMMM yyyy, HH:mm', { locale: ru })
 
-  // Проверяем авторизацию и наличие записи у текущего пользователя
   const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
 
   let isRegistered = false
   if (user) {
@@ -42,78 +36,89 @@ export default async function MeetingPage({ params }: PageProps) {
   }
 
   const isFull = meeting.seats_taken >= meeting.seats_total
+  const percent = meeting.seats_total > 0
+    ? Math.min(Math.round((meeting.seats_taken / meeting.seats_total) * 100), 100)
+    : 0
+
+  const boxStyle = { border: '1px solid #e5ddd0', borderRadius: '0.75rem', padding: '1.25rem' }
+  const labelStyle = { fontSize: '0.7rem', fontWeight: 600 as const, textTransform: 'uppercase' as const, letterSpacing: '0.05em', color: '#78716c', marginBottom: '0.375rem' }
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <div className="rounded-xl bg-white p-8 shadow-sm">
-        {/* Заголовок */}
-        <div className="flex items-start justify-between gap-4">
-          <h1 className="text-2xl font-bold text-gray-900">{meeting.title}</h1>
-          {meeting.cefr_level && (
-            <span className="shrink-0 rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700">
-              {meeting.cefr_level}
-            </span>
-          )}
+    <div>
+      {/* Breadcrumb */}
+      <p className="mb-4 text-sm" style={{ color: '#78716c' }}>
+        <Link href="/meetings" className="hover:underline">← Каталог встреч</Link>
+        {' / '}
+        <span>{meeting.club.name}</span>
+      </p>
+
+      <div className="flex gap-6 items-start">
+        {/* Main */}
+        <div className="flex-1 min-w-0">
+          {/* Title */}
+          <div className="flex items-start gap-3 mb-6">
+            <h1 className="text-2xl font-bold flex-1" style={{ color: '#1c1917' }}>{meeting.title}</h1>
+            {meeting.cefr_level && (
+              <span className="shrink-0 rounded-full px-3 py-1 text-sm font-medium border" style={{ backgroundColor: '#fef3c7', color: '#92400e', borderColor: '#fde68a' }}>
+                {meeting.cefr_level}
+              </span>
+            )}
+          </div>
+
+          <hr style={{ borderColor: '#e5ddd0', marginBottom: '1.5rem' }} />
+
+          {/* 2×2 info grid */}
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div style={boxStyle}>
+              <p style={labelStyle}>Дата и время</p>
+              <p className="font-medium text-sm" style={{ color: '#1c1917' }}>{formattedDate}</p>
+            </div>
+            <div style={boxStyle}>
+              <p style={labelStyle}>Адрес</p>
+              <p className="font-medium text-sm" style={{ color: '#1c1917' }}>{meeting.location || '—'}</p>
+            </div>
+            <div style={boxStyle}>
+              <p style={labelStyle}>Клуб</p>
+              <Link href={`/clubs/${meeting.club.id}`} className="font-medium text-sm underline" style={{ color: '#1c1917' }}>
+                {meeting.club.name}
+              </Link>
+            </div>
+            <div style={boxStyle}>
+              <p style={labelStyle}>Организатор</p>
+              <p className="font-medium text-sm" style={{ color: '#1c1917' }}>{meeting.organizer.name || '—'}</p>
+            </div>
+          </div>
         </div>
 
-        {/* Клуб */}
-        <p className="mt-2 text-sm text-gray-500">
-          Клуб:{' '}
-          <Link
-            href={`/clubs/${meeting.club.id}`}
-            className="font-medium text-blue-600 hover:underline"
-          >
-            {meeting.club.name}
-          </Link>
-        </p>
+        {/* Right sidebar — registration */}
+        <div className="w-64 shrink-0 rounded-xl border p-5" style={{ borderColor: '#e5ddd0', backgroundColor: '#fff' }}>
+          <p className="text-sm font-semibold mb-3" style={{ color: '#1c1917' }}>Запись на встречу</p>
 
-        {/* Описание */}
-        {meeting.location && (
-          <div className="mt-4">
-            <h2 className="text-sm font-medium text-gray-700">Адрес</h2>
-            <p className="mt-1 text-sm text-gray-600">{meeting.location}</p>
+          <div className="text-center mb-3">
+            <span className="text-4xl font-bold" style={{ color: '#1c1917' }}>{meeting.seats_taken}</span>
+            <span className="text-lg" style={{ color: '#78716c' }}> из {meeting.seats_total}</span>
+            <p className="text-xs mt-0.5" style={{ color: '#78716c' }}>мест занято</p>
           </div>
-        )}
 
-        {/* Дата */}
-        <div className="mt-4 grid grid-cols-2 gap-4">
-          <div>
-            <h2 className="text-sm font-medium text-gray-700">Дата и время</h2>
-            <p className="mt-1 text-sm text-gray-600">{formattedDate}</p>
-          </div>
-          <div>
-            <h2 className="text-sm font-medium text-gray-700">Места</h2>
-            <p className="mt-1 text-sm text-gray-600">
-              {formatSeats(meeting.seats_taken, meeting.seats_total)}
-            </p>
-          </div>
-        </div>
-
-        {/* Организатор */}
-        <div className="mt-4">
-          <h2 className="text-sm font-medium text-gray-700">Организатор</h2>
-          <p className="mt-1 text-sm text-gray-600">{meeting.organizer.name}</p>
-        </div>
-
-        {/* Кнопка записи */}
-        {user ? (
-          <div className="mt-8">
-            <RegisterButton
-              meetingId={id}
-              isRegistered={isRegistered}
-              isFull={isFull}
+          <div className="h-2 w-full rounded-full mb-4" style={{ backgroundColor: '#e5ddd0' }}>
+            <div
+              className="h-2 rounded-full transition-all"
+              style={{ width: `${percent}%`, backgroundColor: isFull ? '#dc2626' : '#1c1917' }}
             />
           </div>
-        ) : (
-          <div className="mt-8">
+
+          {user ? (
+            <RegisterButton meetingId={id} isRegistered={isRegistered} isFull={isFull} />
+          ) : (
             <Link
               href="/login"
-              className="block w-full rounded-lg bg-blue-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+              className="block w-full rounded-lg px-4 py-2.5 text-center text-sm font-semibold text-white transition-colors"
+              style={{ backgroundColor: '#1c1917' }}
             >
               Войдите, чтобы записаться
             </Link>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   )

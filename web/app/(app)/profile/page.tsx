@@ -25,25 +25,28 @@ export default async function ProfilePage() {
     : user.email?.slice(0, 2).toUpperCase() ?? '??'
 
   return (
-    <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-      {/* Левая колонка — аватар-заглушка + имя */}
-      <div className="flex flex-col items-center gap-4 md:col-span-1">
-        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-blue-600 text-2xl font-bold text-white">
+    <div className="flex gap-6 items-start">
+      {/* Left: profile card */}
+      <div className="w-52 shrink-0 rounded-xl bg-white border p-6 flex flex-col items-center text-center gap-4" style={{ borderColor: '#e5ddd0' }}>
+        <div className="w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold text-white" style={{ backgroundColor: '#1c1917' }}>
           {initials}
         </div>
-        <div className="text-center">
-          <p className="text-lg font-semibold text-gray-900">{profile.name || 'Без имени'}</p>
+        <div>
+          <p className="font-semibold text-base" style={{ color: '#1c1917' }}>{profile.name || 'Без имени'}</p>
           {profile.cefr_level && (
-            <span className="mt-1 inline-block rounded-full bg-blue-100 px-3 py-0.5 text-xs font-medium text-blue-700">
+            <span className="mt-1 inline-block rounded-full px-3 py-0.5 text-xs font-medium border" style={{ backgroundColor: '#fef3c7', color: '#92400e', borderColor: '#fde68a' }}>
               {profile.cefr_level}
             </span>
+          )}
+          {profile.bio && (
+            <p className="mt-2 text-xs leading-relaxed" style={{ color: '#78716c' }}>{profile.bio}</p>
           )}
         </div>
       </div>
 
-      {/* Правая колонка — форма */}
-      <div className="rounded-xl bg-white p-6 shadow-sm md:col-span-2">
-        <h1 className="mb-6 text-xl font-semibold text-gray-900">Редактировать профиль</h1>
+      {/* Right: form */}
+      <div className="flex-1 rounded-xl bg-white border p-6" style={{ borderColor: '#e5ddd0' }}>
+        <h1 className="mb-6 text-xl font-semibold" style={{ color: '#1c1917' }}>Редактировать профиль</h1>
         <ProfileForm profile={profile} />
       </div>
     </div>
