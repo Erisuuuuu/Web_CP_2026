@@ -12,10 +12,7 @@ export async function getMeetings(
     .from('meetings')
     .select(`
       *,
-      club:clubs!meetings_club_id_fkey(id, name),
-      organizer:clubs!meetings_club_id_fkey(
-        owner:profiles!profiles_user_id_fkey(id, name, avatar_url)
-      ),
+      club:clubs(id, name, owner_id),
       registrations(count)
     `)
     .limit(20)
@@ -52,9 +49,9 @@ export async function getMeetings(
         name: r.club?.name ?? '',
       },
       organizer: {
-        id: r.organizer?.owner?.id ?? '',
-        name: r.organizer?.owner?.name ?? '',
-        avatar_url: r.organizer?.owner?.avatar_url ?? null,
+        id: r.club?.owner_id ?? '',
+        name: '',
+        avatar_url: null,
       },
       seats_taken: r.registrations?.[0]?.count ?? 0,
     }
@@ -72,10 +69,7 @@ export async function getMeeting(
     .from('meetings')
     .select(`
       *,
-      club:clubs!meetings_club_id_fkey(id, name),
-      organizer:clubs!meetings_club_id_fkey(
-        owner:profiles!profiles_user_id_fkey(id, name, avatar_url)
-      ),
+      club:clubs(id, name, owner_id),
       registrations(count)
     `)
     .eq('id', meetingId)
@@ -100,9 +94,9 @@ export async function getMeeting(
       name: r.club?.name ?? '',
     },
     organizer: {
-      id: r.organizer?.owner?.id ?? '',
-      name: r.organizer?.owner?.name ?? '',
-      avatar_url: r.organizer?.owner?.avatar_url ?? null,
+      id: r.club?.owner_id ?? '',
+      name: '',
+      avatar_url: null,
     },
     seats_taken: r.registrations?.[0]?.count ?? 0,
   }
@@ -158,7 +152,7 @@ export async function updateMeeting(
   // Проверяем, что пользователь — owner клуба этой встречи
   const { data: meeting, error: meetingError } = await supabase
     .from('meetings')
-    .select('id, club:clubs!meetings_club_id_fkey(owner_id)')
+    .select('id, club:clubs(owner_id)')
     .eq('id', meetingId)
     .single()
 
