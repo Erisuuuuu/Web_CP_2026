@@ -1,6 +1,8 @@
 import { getMeetings } from '@/lib/services/meetings'
 import { meetingFilterSchema } from '@/lib/validators/meeting'
 import MeetingCard from '@/components/meetings/MeetingCard'
+import MeetingsFilter from '@/components/meetings/MeetingsFilter'
+import type { CefrLevel } from '@/lib/types'
 
 interface PageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>
@@ -34,6 +36,8 @@ export default async function MeetingsPage({ searchParams }: PageProps) {
   return (
     <div>
       <h1 className="mb-6 text-2xl font-bold text-gray-900">Встречи</h1>
+
+      <MeetingsFilter defaultValue={filter.cefr as CefrLevel | undefined} />
 
       {meetings.length === 0 ? (
         <p className="text-gray-500">Встреч пока нет.</p>

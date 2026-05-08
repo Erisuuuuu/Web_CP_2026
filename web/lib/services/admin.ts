@@ -35,18 +35,11 @@ export async function blockUser(
   const isAdmin = await checkAdmin(requestingUserId)
   if (!isAdmin) return { data: null, error: 'forbidden' }
 
-  // profiles не имеет поля is_active — блокируем через смену роли на 'blocked'
-  // не подходит, т.к. role CHECK (role IN ('member','admin')).
-  // Единственный вариант по схеме — удалить профиль или использовать Supabase Auth admin API.
-  // Для курсача реализуем как обнуление имени + пометку через bio.
-  // Но правильнее: используем service_role client для ban через auth.admin API.
-  // Поскольку service_role key недоступен в клиенте — помечаем через bio-поле как [BLOCKED].
-  // Это обходное решение, т.к. схема не содержит is_active для profiles.
   const supabase = await createClient()
 
   const { data, error } = await supabase
     .from('profiles')
-    .update({ bio: '[BLOCKED]' })
+    .update({ is_active: false })
     .eq('user_id', targetUserId)
     .select()
     .single()

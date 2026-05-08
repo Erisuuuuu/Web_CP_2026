@@ -21,6 +21,7 @@ export interface Profile {
   cefr_level: CefrLevel | null
   avatar_url: string | null
   role: UserRole
+  is_active: boolean
   created_at: string
 }
 
