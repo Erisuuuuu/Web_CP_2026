@@ -1,6 +1,7 @@
 'use client'
 
 import { useTransition, useState, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { profileSchema, type ProfileInput } from '@/lib/validators/profile'
@@ -22,6 +23,7 @@ export default function ProfileEditor({ profile, userId }: ProfileEditorProps) {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(profile.avatar_url)
   const [avatarUploading, setAvatarUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const router = useRouter()
 
   const initials = profile.name
     ? profile.name.slice(0, 2).toUpperCase()
@@ -66,8 +68,8 @@ export default function ProfileEditor({ profile, userId }: ProfileEditorProps) {
       if (uploadError) throw uploadError
       const { data } = supabase.storage.from('avatars').getPublicUrl(path)
       setAvatarUrl(data.publicUrl + '?t=' + Date.now())
-      // persist to profile
       await supabase.from('profiles').update({ avatar_url: data.publicUrl }).eq('user_id', userId)
+      router.refresh()
     } catch {
       // silent — avatar upload not critical
     } finally {
