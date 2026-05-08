@@ -11,8 +11,11 @@ interface PageProps {
 export default async function MeetingsPage({ searchParams }: PageProps) {
   const params = await searchParams
 
+  const cefrRaw = params.cefr
+  const cefrArr = Array.isArray(cefrRaw) ? cefrRaw : cefrRaw ? [cefrRaw] : undefined
+
   const raw = {
-    cefr: typeof params.cefr === 'string' ? params.cefr : undefined,
+    cefr: cefrArr,
     from: typeof params.from === 'string' ? params.from : undefined,
     to: typeof params.to === 'string' ? params.to : undefined,
   }
@@ -34,16 +37,14 @@ export default async function MeetingsPage({ searchParams }: PageProps) {
 
   return (
     <div className="flex gap-8">
-      {/* Sidebar filter */}
       <aside className="w-52 shrink-0">
         <MeetingsFilter
-          defaultCefr={filter.cefr as CefrLevel | undefined}
+          defaultCefr={(filter.cefr ?? []) as CefrLevel[]}
           defaultFrom={filter.from}
           defaultTo={filter.to}
         />
       </aside>
 
-      {/* Main content */}
       <div className="flex-1 min-w-0">
         <h1 className="mb-6 text-2xl font-bold" style={{ color: '#1c1917' }}>Каталог встреч</h1>
 

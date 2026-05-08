@@ -25,6 +25,7 @@ export async function loginAction(formData: FormData) {
 
 export async function registerAction(formData: FormData) {
   const raw = {
+    name: formData.get('name'),
     email: formData.get('email'),
     password: formData.get('password'),
     confirmPassword: formData.get('confirmPassword'),
@@ -35,8 +36,8 @@ export async function registerAction(formData: FormData) {
     return { error: parsed.error.issues[0].message }
   }
 
-  const { email, password } = parsed.data
-  const result = await signUp(email, password)
+  const { name, email, password } = parsed.data
+  const result = await signUp(email, password, name)
 
   if (result.error) return { error: result.error }
 

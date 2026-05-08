@@ -26,6 +26,4 @@ export async function updateProfileAction(formData: FormData) {
   if (result.error) {
     return { error: result.error }
   }
-
-  redirect('/profile')
 }

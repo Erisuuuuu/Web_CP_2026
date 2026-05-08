@@ -18,8 +18,8 @@ export async function getMeetings(
     .limit(20)
     .order('date', { ascending: true })
 
-  if (filter?.cefr) {
-    query = query.eq('cefr_level', filter.cefr)
+  if (filter?.cefr && filter.cefr.length > 0) {
+    query = query.in('cefr_level', filter.cefr)
   }
   if (filter?.from) {
     query = query.gte('date', filter.from)

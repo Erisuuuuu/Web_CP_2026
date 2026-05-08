@@ -20,6 +20,7 @@ export default function RegisterForm() {
 
   const onSubmit = (data: RegisterInput) => {
     const formData = new FormData()
+    formData.set('name', data.name)
     formData.set('email', data.email)
     formData.set('password', data.password)
     formData.set('confirmPassword', data.confirmPassword)
@@ -37,6 +38,12 @@ export default function RegisterForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <div>
+        <label className="mb-1 block text-sm font-medium" style={{ color: '#57534e' }}>Имя</label>
+        <input type="text" {...register('name')} className={inputClass} style={inputStyle} placeholder="Иван Иванов" />
+        {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
+      </div>
+
       <div>
         <label className="mb-1 block text-sm font-medium" style={{ color: '#57534e' }}>Email</label>
         <input type="email" {...register('email')} className={inputClass} style={inputStyle} placeholder="you@example.com" />

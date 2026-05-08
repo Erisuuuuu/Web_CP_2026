@@ -15,7 +15,7 @@ export const meetingSchema = z.object({
 export type MeetingInput = z.infer<typeof meetingSchema>
 
 export const meetingFilterSchema = z.object({
-  cefr: z.enum(cefrLevels).optional(),
+  cefr: z.array(z.enum(cefrLevels)).optional(),
   from: z.string().optional(),
   to: z.string().optional(),
 })
