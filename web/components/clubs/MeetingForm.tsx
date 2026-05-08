@@ -56,7 +56,14 @@ export default function MeetingForm({ clubId, action }: MeetingFormProps) {
 
       <div>
         <label className="mb-1 block" style={ls}>Дата и время <span className="text-red-500">*</span></label>
-        <input type="datetime-local" {...register('date')} className={ic} style={is} />
+        <input
+          type="datetime-local"
+          {...register('date')}
+          className={ic}
+          style={is}
+          min={new Date().toISOString().slice(0, 16)}
+          max="2030-12-31T23:59"
+        />
         {errors.date && <p className="mt-1 text-xs text-red-500">{errors.date.message}</p>}
       </div>
 
