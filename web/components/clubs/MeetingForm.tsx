@@ -15,6 +15,7 @@ export default function MeetingForm({ clubId, action }: MeetingFormProps) {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<MeetingInput>({
     resolver: zodResolver(meetingSchema),
@@ -30,7 +31,10 @@ export default function MeetingForm({ clubId, action }: MeetingFormProps) {
     if (values.location) formData.set('location', values.location)
     formData.set('cefr_level', values.cefr_level)
     formData.set('seats_total', String(values.seats_total))
-    await action(formData)
+    const result = await action(formData)
+    if (result?.error) {
+      setError('root', { message: result.error })
+    }
   })
 
   const ic = 'w-full rounded-lg px-3 py-2 text-sm outline-none transition-colors'
@@ -77,6 +81,10 @@ export default function MeetingForm({ clubId, action }: MeetingFormProps) {
         <input type="number" min={1} {...register('seats_total', { valueAsNumber: true })} className={ic} style={is} />
         {errors.seats_total && <p className="mt-1 text-xs text-red-500">{errors.seats_total.message}</p>}
       </div>
+
+      {errors.root && (
+        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{errors.root.message}</p>
+      )}
 
       <button
         type="submit"

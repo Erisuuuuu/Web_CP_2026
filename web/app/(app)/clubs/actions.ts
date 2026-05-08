@@ -18,7 +18,7 @@ export async function createClubAction(formData: FormData) {
   const raw = {
     name: formData.get('name'),
     description: formData.get('description') || undefined,
-    language: formData.get('language'),
+
   }
 
   const parsed = clubSchema.safeParse(raw)
@@ -45,7 +45,7 @@ export async function updateClubAction(clubId: string, formData: FormData) {
   const raw = {
     name: formData.get('name'),
     description: formData.get('description') || undefined,
-    language: formData.get('language'),
+
   }
 
   const parsed = clubSchema.safeParse(raw)
@@ -75,7 +75,7 @@ export async function createMeetingAction(clubId: string, formData: FormData) {
     date: formData.get('date'),
     location: formData.get('location') || undefined,
     cefr_level: formData.get('cefr_level'),
-    seats_total: formData.get('seats_total'),
+    seats_total: Number(formData.get('seats_total')),
   }
 
   const parsed = meetingSchema.safeParse(raw)
