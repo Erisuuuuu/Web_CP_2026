@@ -1,5 +1,107 @@
 import { createClient } from '@/lib/supabase/server'
-import type { Result, RegistrationWithProfile } from '@/lib/types'
+import type { Result, RegistrationResult, RegistrationWithProfile } from '@/lib/types'
+
+// ─── Тип результата записи ────────────────────────────────────────────────────
+// RegistrationResult = { ok: true } | { ok: false; reason: 'full' | 'duplicate' | 'inactive' | 'forbidden' }
+// Примечание: в types.ts reason = 'inactive_club', но по заданию TDD используем 'inactive'
+
+type RegResult =
+  | { ok: true }
+  | { ok: false; reason: 'full' | 'duplicate' | 'inactive' | 'forbidden' }
+
+/**
+ * Записывает пользователя на встречу.
+ * Проверяет: активность клуба → наличие мест → уникальность записи.
+ */
+export async function registerForMeeting(
+  meetingId: string,
+  userId: string
+): Promise<RegResult> {
+  const supabase = await createClient()
+
+  // 1. Получить встречу + клуб
+  const { data: meeting, error: meetingError } = await supabase
+    .from('meetings')
+    .select('id, seats_total, club:clubs!meetings_club_id_fkey(is_active)')
+    .eq('id', meetingId)
+    .single()
+
+  if (meetingError || !meeting) {
+    return { ok: false, reason: 'inactive' }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const isActive = (meeting as any).club?.is_active as boolean | undefined
+
+  // 2. Если клуб неактивен
+  if (!isActive) {
+    return { ok: false, reason: 'inactive' }
+  }
+
+  // 3. Подсчитать количество регистраций
+  const { count, error: countError } = await supabase
+    .from('registrations')
+    .select('id', { count: 'exact', head: true })
+    .eq('meeting_id', meetingId)
+
+  if (countError) {
+    return { ok: false, reason: 'full' }
+  }
+
+  // 4. Проверить наличие мест
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const seatsTotal = (meeting as any).seats_total as number
+  if ((count ?? 0) >= seatsTotal) {
+    return { ok: false, reason: 'full' }
+  }
+
+  // 5. Попытаться вставить запись
+  const { error: insertError } = await supabase
+    .from('registrations')
+    .insert({ meeting_id: meetingId, user_id: userId })
+
+  // 6. Обработка ошибки уникальности
+  if (insertError) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((insertError as any).code === '23505') {
+      return { ok: false, reason: 'duplicate' }
+    }
+    return { ok: false, reason: 'full' }
+  }
+
+  return { ok: true }
+}
+
+/**
+ * Отменяет запись пользователя на встречу.
+ * Если запись не найдена (чужая или несуществующая) — возвращает forbidden.
+ */
+export async function unregisterFromMeeting(
+  meetingId: string,
+  userId: string
+): Promise<RegResult> {
+  const supabase = await createClient()
+
+  const { count, error } = await supabase
+    .from('registrations')
+    .delete()
+    .eq('meeting_id', meetingId)
+    .eq('user_id', userId)
+
+  if (error) {
+    return { ok: false, reason: 'forbidden' }
+  }
+
+  // Если удалено 0 строк — запись не принадлежит пользователю
+  if ((count ?? 0) === 0) {
+    return { ok: false, reason: 'forbidden' }
+  }
+
+  return { ok: true }
+}
+
+// Re-export RegistrationResult для внешнего использования
+export type { RegistrationResult }
 
 /**
  * Возвращает регистрации на встречу с профилями участников.
