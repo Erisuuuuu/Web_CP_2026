@@ -3,15 +3,17 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { meetingSchema, type MeetingInput } from '@/lib/validators/meeting'
+import type { Meeting } from '@/lib/types'
 
 const CEFR_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const
 
 interface MeetingFormProps {
   clubId: string
   action: (formData: FormData) => Promise<void | { error?: string }>
+  meeting?: Meeting
 }
 
-export default function MeetingForm({ clubId, action }: MeetingFormProps) {
+export default function MeetingForm({ clubId, action, meeting }: MeetingFormProps) {
   const {
     register,
     handleSubmit,
@@ -19,7 +21,15 @@ export default function MeetingForm({ clubId, action }: MeetingFormProps) {
     formState: { errors, isSubmitting },
   } = useForm<MeetingInput>({
     resolver: zodResolver(meetingSchema),
-    defaultValues: { title: '', description: '', date: '', location: '', seats_total: 10 },
+    defaultValues: meeting
+      ? {
+          title: meeting.title,
+          date: meeting.date.slice(0, 16),
+          location: meeting.location ?? '',
+          cefr_level: meeting.cefr_level ?? undefined,
+          seats_total: meeting.seats_total,
+        }
+      : { title: '', description: '', date: '', location: '', seats_total: 10 },
   })
 
   const onSubmit = handleSubmit(async (values) => {
@@ -99,7 +109,7 @@ export default function MeetingForm({ clubId, action }: MeetingFormProps) {
         className="w-full rounded-lg py-2.5 text-sm font-semibold text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
         style={{ backgroundColor: '#1c1917' }}
       >
-        {isSubmitting ? 'Создаём...' : 'Создать встречу'}
+        {isSubmitting ? 'Сохраняем...' : meeting ? 'Сохранить изменения' : 'Создать встречу'}
       </button>
     </form>
   )
