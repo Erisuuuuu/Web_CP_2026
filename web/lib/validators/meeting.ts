@@ -6,7 +6,10 @@ export const meetingSchema = z.object({
   title: z.string().min(1, 'Название обязательно'),
   description: z.string().optional(),
   // date поле в БД — принимаем как ISO строку (datetime-local input даёт формат без Z)
-  date: z.string().min(1, 'Дата обязательна'),
+  date: z.string().min(1, 'Дата обязательна').refine(
+    (v) => new Date(v) > new Date(),
+    'Дата должна быть в будущем'
+  ),
   location: z.string().optional(),
   cefr_level: z.enum(cefrLevels, { error: 'Выберите уровень CEFR' }),
   seats_total: z.number().int().min(1, 'Минимум 1 место'),
