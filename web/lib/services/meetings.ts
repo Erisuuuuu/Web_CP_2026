@@ -80,6 +80,19 @@ export async function getMeeting(
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const r = data as any
+  const ownerId: string = r.club?.owner_id ?? ''
+
+  // Отдельный запрос для имени организатора (PostgREST не поддерживает meetings→clubs→profiles)
+  let organizerName = ''
+  if (ownerId) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('name')
+      .eq('user_id', ownerId)
+      .single()
+    organizerName = profile?.name ?? ''
+  }
+
   const meeting: MeetingWithDetails = {
     id: r.id,
     club_id: r.club_id,
@@ -94,8 +107,8 @@ export async function getMeeting(
       name: r.club?.name ?? '',
     },
     organizer: {
-      id: r.club?.owner_id ?? '',
-      name: '',
+      id: ownerId,
+      name: organizerName,
       avatar_url: null,
     },
     seats_taken: r.registrations?.[0]?.count ?? 0,

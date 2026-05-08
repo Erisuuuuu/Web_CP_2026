@@ -82,18 +82,13 @@ export async function unregisterFromMeeting(
 ): Promise<RegResult> {
   const supabase = await createClient()
 
-  const { count, error } = await supabase
+  const { error } = await supabase
     .from('registrations')
     .delete()
     .eq('meeting_id', meetingId)
     .eq('user_id', userId)
 
   if (error) {
-    return { ok: false, reason: 'forbidden' }
-  }
-
-  // Если удалено 0 строк — запись не принадлежит пользователю
-  if ((count ?? 0) === 0) {
     return { ok: false, reason: 'forbidden' }
   }
 
