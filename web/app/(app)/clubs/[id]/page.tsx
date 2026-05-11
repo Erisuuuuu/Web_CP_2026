@@ -41,13 +41,15 @@ export default async function ClubPage({ params }: PageProps) {
         <div>
           <div className="flex items-center gap-3 mb-1">
             <h1 className="text-2xl font-bold" style={{ color: '#1c1917' }}>{club.name}</h1>
-            <span className="rounded-full px-2.5 py-0.5 text-xs font-medium border" style={
-              club.is_active
-                ? { backgroundColor: '#f0fdf4', color: '#16a34a', borderColor: '#bbf7d0' }
-                : { backgroundColor: '#fef2f2', color: '#dc2626', borderColor: '#fecaca' }
-            }>
-              {club.is_active ? 'Активный' : 'Скрыт'}
-            </span>
+            {isOwner && (
+              <span className="rounded-full px-2.5 py-0.5 text-xs font-medium border" style={
+                club.is_active
+                  ? { backgroundColor: '#f0fdf4', color: '#16a34a', borderColor: '#bbf7d0' }
+                  : { backgroundColor: '#fef2f2', color: '#dc2626', borderColor: '#fecaca' }
+              }>
+                {club.is_active ? 'Активный' : 'Скрыт'}
+              </span>
+            )}
           </div>
           {organizer?.name && (
             <p className="text-sm" style={{ color: '#78716c' }}>Организатор: {organizer.name}</p>
