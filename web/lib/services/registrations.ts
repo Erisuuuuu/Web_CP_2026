@@ -125,41 +125,36 @@ export async function getMeetingRegistrations(
     return { data: null, error: 'forbidden' }
   }
 
-  // Получаем регистрации с профилями
+  // Получаем регистрации
   const { data: registrations, error: regError } = await supabase
     .from('registrations')
-    .select(`
-      id,
-      registered_at,
-      user_id,
-      meeting_id,
-      profile:profiles!registrations_user_id_fkey(
-        id,
-        name,
-        cefr_level,
-        user_id
-      )
-    `)
+    .select('id, registered_at, user_id, meeting_id')
     .eq('meeting_id', meetingId)
     .order('registered_at', { ascending: true })
 
   if (regError) return { data: null, error: regError.message }
 
-  // Собираем user_id для получения email из auth.admin
-  const userIds = (registrations ?? []).map(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (r: any) => r.user_id as string
-  )
+  const userIds = (registrations ?? []).map((r) => r.user_id as string)
 
-  // Получаем email через admin API (service role key нужен в env)
+  // Получаем профили отдельным запросом (нет прямого FK registrations→profiles)
+  const profileMap: Record<string, { name: string | null; cefr_level: CefrLevel | null }> = {}
+  if (userIds.length > 0) {
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('user_id, name, cefr_level')
+      .in('user_id', userIds)
+    for (const p of profiles ?? []) {
+      profileMap[p.user_id] = { name: p.name ?? null, cefr_level: (p.cefr_level as CefrLevel) ?? null }
+    }
+  }
+
+  // Получаем email через admin API
   const emailMap: Record<string, string> = {}
   if (userIds.length > 0) {
     const { data: adminData, error: adminError } = await supabase.auth.admin.listUsers()
     if (!adminError && adminData) {
       for (const user of adminData.users) {
-        if (userIds.includes(user.id)) {
-          emailMap[user.id] = user.email ?? ''
-        }
+        if (userIds.includes(user.id)) emailMap[user.id] = user.email ?? ''
       }
     }
   }
@@ -170,10 +165,7 @@ export async function getMeetingRegistrations(
     user_id: r.user_id as string,
     meeting_id: r.meeting_id as string,
     registered_at: r.registered_at as string,
-    profile: {
-      name: (r.profile?.name as string | null) ?? null,
-      cefr_level: (r.profile?.cefr_level as CefrLevel | null) ?? null,
-    },
+    profile: profileMap[r.user_id as string] ?? { name: null, cefr_level: null },
     email: emailMap[r.user_id as string] ?? '',
   }))
 
