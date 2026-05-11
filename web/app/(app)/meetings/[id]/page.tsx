@@ -35,6 +35,7 @@ export default async function MeetingPage({ params }: PageProps) {
     isRegistered = reg !== null
   }
 
+  const isOwner = user?.id === meeting.organizer.id
   const isFull = meeting.seats_taken >= meeting.seats_total
   const percent = meeting.seats_total > 0
     ? Math.min(Math.round((meeting.seats_taken / meeting.seats_total) * 100), 100)
@@ -106,6 +107,16 @@ export default async function MeetingPage({ params }: PageProps) {
               style={{ width: `${percent}%`, backgroundColor: isFull ? '#dc2626' : '#1c1917' }}
             />
           </div>
+
+          {isOwner && (
+            <a
+              href={`/api/meetings/${id}/export`}
+              className="block w-full rounded-lg border py-2 text-center text-xs font-medium transition-colors mb-3 hover:bg-stone-50"
+              style={{ borderColor: '#d6cdc0', color: '#57534e' }}
+            >
+              ↓ Скачать CSV участников
+            </a>
+          )}
 
           {user ? (
             <RegisterButton meetingId={id} isRegistered={isRegistered} isFull={isFull} />
