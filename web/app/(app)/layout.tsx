@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { logoutAction } from '@/app/(auth)/actions'
 import { getProfile } from '@/lib/services/profiles'
@@ -13,6 +14,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   let isAdmin = false
   if (user) {
     const profileResult = await getProfile(user.id)
+    if (profileResult.data && profileResult.data.is_active === false) {
+      await supabase.auth.signOut()
+      redirect('/login?blocked=1')
+    }
     const name = profileResult.data?.name ?? user.email ?? ''
     displayName = name.split(' ')[0]
     initials = name.slice(0, 2).toUpperCase()
