@@ -12,8 +12,9 @@ export async function getMeetings(
     .from('meetings')
     .select(`
       *,
-      club:clubs(id, name, owner_id)
+      club:clubs!inner(id, name, owner_id, is_active)
     `)
+    .eq('club.is_active', true)
     .gte('date', new Date().toISOString())
     .limit(20)
     .order('date', { ascending: true })
@@ -69,7 +70,7 @@ export async function getMeeting(
     .from('meetings')
     .select(`
       *,
-      club:clubs(id, name, owner_id)
+      club:clubs!inner(id, name, owner_id)
     `)
     .eq('id', meetingId)
     .single()
