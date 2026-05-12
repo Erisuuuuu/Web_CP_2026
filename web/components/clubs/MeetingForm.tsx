@@ -24,6 +24,7 @@ export default function MeetingForm({ clubId, action, meeting }: MeetingFormProp
     defaultValues: meeting
       ? {
           title: meeting.title,
+          description: meeting.description ?? '',
           date: meeting.date.slice(0, 16),
           location: meeting.location ?? '',
           cefr_level: meeting.cefr_level ?? undefined,

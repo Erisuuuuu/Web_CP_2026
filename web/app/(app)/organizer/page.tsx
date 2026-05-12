@@ -5,6 +5,7 @@ import { getUserClubs } from '@/lib/services/clubs'
 import { getMeetingsByClub } from '@/lib/services/meetings'
 import { ProgressBar } from '@/components/organizer/ProgressBar'
 import { OrganizerFilter } from '@/components/organizer/OrganizerFilter'
+import DeleteButton from '@/components/organizer/DeleteButton'
 import type { MeetingRow } from '@/lib/types'
 
 interface PageProps {
@@ -81,6 +82,7 @@ export default async function OrganizerPage({ searchParams }: PageProps) {
                 >
                   Редактировать клуб
                 </Link>
+                <DeleteButton type="club" id={club.id} name={club.name} />
               </div>
               <Link
                 href={`/clubs/${club.id}/meetings/new`}
@@ -130,6 +132,7 @@ export default async function OrganizerPage({ searchParams }: PageProps) {
                       >
                         ↓ CSV
                       </a>
+                      <DeleteButton type="meeting" id={meeting.id} name={meeting.title} />
                     </div>
                   </div>
                 ))}

@@ -38,6 +38,7 @@ export interface Meeting {
   id: string
   club_id: string
   title: string
+  description: string | null
   date: string          // ISO 8601
   location: string | null
   seats_total: number

@@ -68,6 +68,13 @@ export default async function MeetingPage({ params }: PageProps) {
 
           <hr style={{ borderColor: '#e5ddd0', marginBottom: '1.5rem' }} />
 
+          {meeting.description && (
+            <div className="mb-6 rounded-xl border p-4" style={{ borderColor: '#e5ddd0', backgroundColor: '#fff' }}>
+              <p style={labelStyle}>Описание</p>
+              <p className="text-sm whitespace-pre-wrap" style={{ color: '#1c1917' }}>{meeting.description}</p>
+            </div>
+          )}
+
           {/* 2×2 info grid */}
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div style={boxStyle}>

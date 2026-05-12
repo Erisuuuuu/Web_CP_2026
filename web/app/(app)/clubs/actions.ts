@@ -4,8 +4,10 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { clubSchema } from '@/lib/validators/club'
 import { meetingSchema } from '@/lib/validators/meeting'
-import { createClub, updateClub } from '@/lib/services/clubs'
-import { createMeeting, updateMeeting } from '@/lib/services/meetings'
+import { revalidatePath } from 'next/cache'
+import { createClub, updateClub, deleteClub } from '@/lib/services/clubs'
+import { createMeeting, updateMeeting, deleteMeeting } from '@/lib/services/meetings'
+import type { Result } from '@/lib/types'
 
 export async function createClubAction(formData: FormData) {
   const supabase = await createClient()
@@ -89,6 +91,31 @@ export async function createMeetingAction(clubId: string, formData: FormData) {
   }
 
   redirect(`/meetings/${result.data!.id}`)
+}
+
+export async function deleteClubAction(clubId: string): Promise<Result<null>> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { data: null, error: 'Не авторизован' }
+
+  const result = await deleteClub(clubId, user.id)
+  if (result.error) return { data: null, error: result.error }
+
+  revalidatePath('/organizer')
+  return { data: null, error: null }
+}
+
+export async function deleteMeetingAction(meetingId: string): Promise<Result<null>> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { data: null, error: 'Не авторизован' }
+
+  const result = await deleteMeeting(meetingId, user.id)
+  if (result.error) return { data: null, error: result.error }
+
+  revalidatePath('/organizer')
+  revalidatePath('/meetings')
+  return { data: null, error: null }
 }
 
 export async function updateMeetingAction(meetingId: string, formData: FormData) {

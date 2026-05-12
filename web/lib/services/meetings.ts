@@ -3,8 +3,11 @@ import type { Meeting, MeetingRow, MeetingWithDetails, Result } from '@/lib/type
 import type { MeetingInput } from '@/lib/validators/meeting'
 import type { MeetingFilter } from '@/lib/validators/meeting'
 
+const PAGE_SIZE = 20
+
 export async function getMeetings(
-  filter?: MeetingFilter
+  filter?: MeetingFilter,
+  limit: number = PAGE_SIZE
 ): Promise<Result<MeetingWithDetails[]>> {
   const supabase = await createClient()
 
@@ -16,7 +19,7 @@ export async function getMeetings(
     `)
     .eq('club.is_active', true)
     .gte('date', new Date().toISOString())
-    .limit(20)
+    .limit(limit)
     .order('date', { ascending: true })
 
   if (filter?.cefr && filter.cefr.length > 0) {
@@ -40,6 +43,7 @@ export async function getMeetings(
       id: r.id,
       club_id: r.club_id,
       title: r.title,
+      description: r.description ?? null,
       date: r.date,
       location: r.location,
       seats_total: r.seats_total,
@@ -97,6 +101,7 @@ export async function getMeeting(
     id: r.id,
     club_id: r.club_id,
     title: r.title,
+    description: r.description ?? null,
     date: r.date,
     location: r.location,
     seats_total: r.seats_total,
@@ -141,6 +146,7 @@ export async function createMeeting(
     .insert({
       club_id: clubId,
       title: input.title,
+      description: input.description ?? null,
       date: input.date,
       location: input.location ?? null,
       seats_total: input.seats_total,
@@ -183,6 +189,7 @@ export async function updateMeeting(
     .from('meetings')
     .update({
       title: input.title,
+      description: input.description ?? null,
       date: input.date,
       location: input.location ?? null,
       seats_total: input.seats_total,
@@ -216,6 +223,7 @@ export async function getMeetingsByClub(
     id: r.id as string,
     club_id: r.club_id as string,
     title: r.title as string,
+    description: (r.description as string | null) ?? null,
     date: r.date as string,
     location: (r.location as string | null) ?? null,
     seats_total: r.seats_total as number,
@@ -225,4 +233,31 @@ export async function getMeetingsByClub(
   }))
 
   return { data: rows, error: null }
+}
+
+export async function deleteMeeting(
+  meetingId: string,
+  userId: string
+): Promise<Result<null>> {
+  const supabase = await createClient()
+
+  const { data: meeting, error: meetingError } = await supabase
+    .from('meetings')
+    .select('id, club:clubs(owner_id)')
+    .eq('id', meetingId)
+    .single()
+
+  if (meetingError || !meeting) {
+    return { data: null, error: 'Встреча не найдена' }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const club = (meeting as any).club
+  if (club?.owner_id !== userId) {
+    return { data: null, error: 'Нет прав на удаление' }
+  }
+
+  const { error } = await supabase.from('meetings').delete().eq('id', meetingId)
+  if (error) return { data: null, error: error.message }
+  return { data: null, error: null }
 }

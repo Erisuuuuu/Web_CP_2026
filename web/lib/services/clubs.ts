@@ -76,3 +76,19 @@ export async function updateClub(
 
   return { data: data as Club, error: null }
 }
+
+export async function deleteClub(
+  clubId: string,
+  userId: string
+): Promise<Result<null>> {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('clubs')
+    .delete()
+    .eq('id', clubId)
+    .eq('owner_id', userId)
+
+  if (error) return { data: null, error: error.message }
+  return { data: null, error: null }
+}
