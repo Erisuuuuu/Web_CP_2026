@@ -45,7 +45,16 @@ export default async function OrganizerPage({ searchParams }: PageProps) {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold" style={{ color: '#1c1917' }}>Мои клубы</h1>
-        <OrganizerFilter current={filter} />
+        <div className="flex items-center gap-3">
+          <OrganizerFilter current={filter} />
+          <Link
+            href="/clubs/new"
+            className="rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors"
+            style={{ backgroundColor: '#1c1917' }}
+          >
+            + Создать клуб
+          </Link>
+        </div>
       </div>
 
       {clubs.length === 0 && (
