@@ -20,7 +20,7 @@ export async function loginAction(formData: FormData) {
 
   if (result.error) return { error: result.error }
 
-  redirect('/')
+  redirect('/meetings')
 }
 
 export async function registerAction(formData: FormData) {
@@ -41,7 +41,11 @@ export async function registerAction(formData: FormData) {
 
   if (result.error) return { error: result.error }
 
-  redirect('/')
+  // Автоматически логиним после регистрации
+  const loginResult = await signIn(email, password)
+  if (loginResult.error) return { error: loginResult.error }
+
+  redirect('/meetings')
 }
 
 export async function logoutAction() {
