@@ -15,6 +15,7 @@ export async function getMeetings(
       club:clubs(id, name, owner_id),
       registrations(count)
     `)
+    .gte('date', new Date().toISOString())
     .limit(20)
     .order('date', { ascending: true })
 

@@ -41,10 +41,7 @@ export async function registerAction(formData: FormData) {
 
   if (result.error) return { error: result.error }
 
-  // Автоматически логиним после регистрации
-  const loginResult = await signIn(email, password)
-  if (loginResult.error) return { error: loginResult.error }
-
+  // signUp уже создаёт сессию через cookies при отключённом email confirmation
   redirect('/meetings')
 }
 
