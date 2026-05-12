@@ -1,34 +1,35 @@
 'use client'
 
 import { useTransition } from 'react'
-import { blockUserAction } from '@/app/(app)/admin/actions'
+import { toggleUserActiveAction } from '@/app/(app)/admin/actions'
 
 interface BlockUserButtonProps {
   userId: string
   userName: string
+  isActive: boolean
 }
 
-export default function BlockUserButton({ userId, userName }: BlockUserButtonProps) {
+export default function BlockUserButton({ userId, userName, isActive }: BlockUserButtonProps) {
   const [isPending, startTransition] = useTransition()
 
   function handleClick() {
-    const confirmed = window.confirm(
-      `Заблокировать пользователя «${userName || userId}»? Это действие нельзя отменить из UI.`
-    )
+    const verb = isActive ? 'Заблокировать' : 'Разблокировать'
+    const confirmed = window.confirm(`${verb} пользователя «${userName || userId}»?`)
     if (!confirmed) return
 
     startTransition(async () => {
-      await blockUserAction(userId)
+      await toggleUserActiveAction(userId, !isActive)
     })
   }
 
+  const baseClass = 'rounded-md px-3 py-1 text-xs font-medium disabled:opacity-50 transition-colors'
+  const style = isActive
+    ? { backgroundColor: '#fef2f2', color: '#dc2626' }
+    : { backgroundColor: '#f0fdf4', color: '#16a34a' }
+
   return (
-    <button
-      onClick={handleClick}
-      disabled={isPending}
-      className="rounded-md bg-red-50 px-3 py-1 text-xs font-medium text-red-600 hover:bg-red-100 disabled:opacity-50"
-    >
-      {isPending ? 'Блокировка…' : 'Заблокировать'}
+    <button onClick={handleClick} disabled={isPending} className={baseClass} style={style}>
+      {isPending ? '...' : isActive ? 'Заблокировать' : 'Разблокировать'}
     </button>
   )
 }

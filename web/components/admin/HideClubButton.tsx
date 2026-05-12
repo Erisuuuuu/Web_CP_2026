@@ -1,34 +1,39 @@
 'use client'
 
 import { useTransition } from 'react'
-import { hideClubAction } from '@/app/(app)/admin/actions'
+import { toggleClubActiveAction } from '@/app/(app)/admin/actions'
 
 interface HideClubButtonProps {
   clubId: string
   clubName: string
+  isActive: boolean
 }
 
-export default function HideClubButton({ clubId, clubName }: HideClubButtonProps) {
+export default function HideClubButton({ clubId, clubName, isActive }: HideClubButtonProps) {
   const [isPending, startTransition] = useTransition()
 
   function handleClick() {
-    const confirmed = window.confirm(
-      `Скрыть клуб «${clubName}»? Клуб станет недоступен для участников.`
-    )
+    const verb = isActive ? 'Скрыть' : 'Вернуть'
+    const confirmed = window.confirm(`${verb} клуб «${clubName}»?`)
     if (!confirmed) return
 
     startTransition(async () => {
-      await hideClubAction(clubId)
+      await toggleClubActiveAction(clubId, !isActive)
     })
   }
+
+  const style = isActive
+    ? { backgroundColor: '#fff7ed', color: '#c2410c' }
+    : { backgroundColor: '#f0fdf4', color: '#16a34a' }
 
   return (
     <button
       onClick={handleClick}
       disabled={isPending}
-      className="rounded-md bg-orange-50 px-3 py-1 text-xs font-medium text-orange-600 hover:bg-orange-100 disabled:opacity-50"
+      className="rounded-md px-3 py-1 text-xs font-medium disabled:opacity-50 transition-colors"
+      style={style}
     >
-      {isPending ? 'Скрытие…' : 'Скрыть'}
+      {isPending ? '...' : isActive ? 'Скрыть' : 'Вернуть'}
     </button>
   )
 }

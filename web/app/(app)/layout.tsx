@@ -10,12 +10,14 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   let initials = ''
   let displayName = ''
   let avatarUrl: string | null = null
+  let isAdmin = false
   if (user) {
     const profileResult = await getProfile(user.id)
     const name = profileResult.data?.name ?? user.email ?? ''
     displayName = name.split(' ')[0]
     initials = name.slice(0, 2).toUpperCase()
     avatarUrl = profileResult.data?.avatar_url ?? null
+    isAdmin = profileResult.data?.role === 'admin'
   }
 
   return (
@@ -38,6 +40,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             {user && (
               <Link href="/organizer" className="text-sm font-medium" style={{ color: '#57534e' }}>
                 Мои клубы
+              </Link>
+            )}
+            {isAdmin && (
+              <Link href="/admin" className="text-sm font-medium" style={{ color: '#dc2626' }}>
+                Админка
               </Link>
             )}
           </div>

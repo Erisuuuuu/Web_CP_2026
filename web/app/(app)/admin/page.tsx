@@ -72,7 +72,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               </thead>
               <tbody>
                 {filteredUsers.map((u) => {
-                  const isBlocked = u.bio === '[BLOCKED]'
+                  const isBlocked = !u.is_active
                   const isSelf = u.user_id === user.id
                   const isOtherAdmin = u.role === 'admin'
                   return (
@@ -99,8 +99,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                         </span>
                       </td>
                       <td className="px-4 py-3 text-right">
-                        {!isSelf && !isOtherAdmin && !isBlocked && (
-                          <BlockUserButton userId={u.user_id} userName={u.name ?? ''} />
+                        {!isSelf && !isOtherAdmin && (
+                          <BlockUserButton userId={u.user_id} userName={u.name ?? ''} isActive={u.is_active} />
                         )}
                       </td>
                     </tr>
@@ -148,7 +148,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right">
-                      {club.is_active && <HideClubButton clubId={club.id} clubName={club.name} />}
+                      <HideClubButton clubId={club.id} clubName={club.name} isActive={club.is_active} />
                     </td>
                   </tr>
                 ))}

@@ -28,18 +28,20 @@ export async function getAllUsers(
   return { data: (data ?? []) as Profile[], error: null }
 }
 
-export async function blockUser(
+export async function setUserActive(
   targetUserId: string,
-  requestingUserId: string
+  requestingUserId: string,
+  active: boolean
 ): Promise<Result<Profile>> {
   const isAdmin = await checkAdmin(requestingUserId)
   if (!isAdmin) return { data: null, error: 'forbidden' }
+  if (targetUserId === requestingUserId) return { data: null, error: 'Нельзя менять статус самому себе' }
 
   const supabase = await createClient()
 
   const { data, error } = await supabase
     .from('profiles')
-    .update({ is_active: false })
+    .update({ is_active: active })
     .eq('user_id', targetUserId)
     .select()
     .single()
@@ -67,9 +69,10 @@ export async function getAllClubsAdmin(
   return { data: (data ?? []) as Club[], error: null }
 }
 
-export async function hideClub(
+export async function setClubActive(
   clubId: string,
-  requestingUserId: string
+  requestingUserId: string,
+  active: boolean
 ): Promise<Result<Club>> {
   const isAdmin = await checkAdmin(requestingUserId)
   if (!isAdmin) return { data: null, error: 'forbidden' }
@@ -77,7 +80,7 @@ export async function hideClub(
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('clubs')
-    .update({ is_active: false })
+    .update({ is_active: active })
     .eq('id', clubId)
     .select()
     .single()
