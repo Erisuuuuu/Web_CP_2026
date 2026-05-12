@@ -16,6 +16,11 @@ export async function signUp(
   if (error) return { data: null, error: error.message }
   if (!data.user) return { data: null, error: 'Пользователь не создан' }
 
+  // Supabase не возвращает ошибку для существующих email — детектируем по пустым identities
+  if (!data.user.identities || data.user.identities.length === 0) {
+    return { data: null, error: 'Пользователь с таким email уже зарегистрирован' }
+  }
+
   return { data: { userId: data.user.id }, error: null }
 }
 
