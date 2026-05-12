@@ -1,10 +1,7 @@
-<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LangClub">
   <defs>
     <clipPath id="logo-clip">
       <circle cx="32" cy="32" r="32"/>
-    </clipPath>
-    <clipPath id="center-clip">
-      <circle cx="32" cy="32" r="14"/>
     </clipPath>
   </defs>
   <g clip-path="url(#logo-clip)">
@@ -15,5 +12,4 @@
     <path d="M32 0 V64 M0 32 H64" stroke="#C8102E" stroke-width="8"/>
   </g>
   <circle cx="32" cy="32" r="15" fill="#ffffff" stroke="#012169" stroke-width="2"/>
-  <image href="/mospoly.jpg" x="18" y="18" width="28" height="28" clip-path="url(#center-clip)" preserveAspectRatio="xMidYMid slice"/>
 </svg>

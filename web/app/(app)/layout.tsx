@@ -31,8 +31,17 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <div className="mx-auto max-w-5xl px-4 flex items-center justify-between h-14">
           {/* Left: logo */}
           <Link href="/meetings" className="flex items-center gap-2">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.svg" alt="LangClub" className="w-8 h-8" />
+            <div className="relative w-8 h-8">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo-ring.svg" alt="" className="w-8 h-8" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/mospoly.jpg"
+                alt=""
+                className="absolute rounded-full object-cover"
+                style={{ top: '8px', left: '8px', width: '16px', height: '16px' }}
+              />
+            </div>
             <span className="font-semibold text-sm" style={{ color: '#1c1917' }}>LangClub</span>
           </Link>
 
