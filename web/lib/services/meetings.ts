@@ -12,8 +12,7 @@ export async function getMeetings(
     .from('meetings')
     .select(`
       *,
-      club:clubs(id, name, owner_id),
-      registrations(count)
+      club:clubs(id, name, owner_id)
     `)
     .gte('date', new Date().toISOString())
     .limit(20)
@@ -54,7 +53,7 @@ export async function getMeetings(
         name: '',
         avatar_url: null,
       },
-      seats_taken: r.registrations?.[0]?.count ?? 0,
+      seats_taken: r.seats_taken ?? 0,
     }
   })
 
@@ -70,8 +69,7 @@ export async function getMeeting(
     .from('meetings')
     .select(`
       *,
-      club:clubs(id, name, owner_id),
-      registrations(count)
+      club:clubs(id, name, owner_id)
     `)
     .eq('id', meetingId)
     .single()
@@ -112,7 +110,7 @@ export async function getMeeting(
       name: organizerName,
       avatar_url: null,
     },
-    seats_taken: r.registrations?.[0]?.count ?? 0,
+    seats_taken: r.seats_taken ?? 0,
   }
 
   return { data: meeting, error: null }
@@ -206,10 +204,7 @@ export async function getMeetingsByClub(
 
   const { data, error } = await supabase
     .from('meetings')
-    .select(`
-      *,
-      registrations(count)
-    `)
+    .select('*')
     .eq('club_id', clubId)
     .order('date', { ascending: true })
 
@@ -225,7 +220,7 @@ export async function getMeetingsByClub(
     seats_total: r.seats_total as number,
     cefr_level: r.cefr_level ?? null,
     created_at: r.created_at as string,
-    seats_taken: (r.registrations?.[0]?.count as number) ?? 0,
+    seats_taken: (r.seats_taken as number) ?? 0,
   }))
 
   return { data: rows, error: null }

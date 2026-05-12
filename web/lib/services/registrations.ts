@@ -19,10 +19,10 @@ export async function registerForMeeting(
 ): Promise<RegResult> {
   const supabase = await createClient()
 
-  // 1. Получить встречу + клуб
+  // 1. Получить встречу + клуб (seats_taken — денормализовано, обновляется триггером)
   const { data: meeting, error: meetingError } = await supabase
     .from('meetings')
-    .select('id, seats_total, club:clubs!meetings_club_id_fkey(is_active)')
+    .select('id, seats_total, seats_taken, club:clubs!meetings_club_id_fkey(is_active)')
     .eq('id', meetingId)
     .single()
 
@@ -38,20 +38,12 @@ export async function registerForMeeting(
     return { ok: false, reason: 'inactive' }
   }
 
-  // 3. Подсчитать количество регистраций
-  const { count, error: countError } = await supabase
-    .from('registrations')
-    .select('id', { count: 'exact', head: true })
-    .eq('meeting_id', meetingId)
-
-  if (countError) {
-    return { ok: false, reason: 'full' }
-  }
-
-  // 4. Проверить наличие мест
+  // 3. Проверить наличие мест
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const seatsTotal = (meeting as any).seats_total as number
-  if ((count ?? 0) >= seatsTotal) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const seatsTaken = ((meeting as any).seats_taken as number) ?? 0
+  if (seatsTaken >= seatsTotal) {
     return { ok: false, reason: 'full' }
   }
 
