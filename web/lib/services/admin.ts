@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import type { Club, Profile, Result } from '@/lib/types'
+import { logger } from '@/lib/logger'
 
 async function checkAdmin(requestingUserId: string): Promise<boolean> {
   const supabase = await createClient()
@@ -34,7 +35,10 @@ export async function setUserActive(
   active: boolean
 ): Promise<Result<Profile>> {
   const isAdmin = await checkAdmin(requestingUserId)
-  if (!isAdmin) return { data: null, error: 'forbidden' }
+  if (!isAdmin) {
+    logger.warn('admin', 'setUserActive: forbidden', { requestingUserId })
+    return { data: null, error: 'forbidden' }
+  }
   if (targetUserId === requestingUserId) return { data: null, error: 'Нельзя менять статус самому себе' }
 
   const supabase = await createClient()
@@ -46,9 +50,13 @@ export async function setUserActive(
     .select()
     .single()
 
-  if (error) return { data: null, error: error.message }
+  if (error) {
+    logger.error('admin', 'setUserActive failed', { error: error.message, targetUserId })
+    return { data: null, error: error.message }
+  }
   if (!data) return { data: null, error: 'Пользователь не найден' }
 
+  logger.info('admin', `setUserActive: user ${active ? 'unblocked' : 'blocked'}`, { targetUserId, requestingUserId })
   return { data: data as Profile, error: null }
 }
 
@@ -85,8 +93,12 @@ export async function setClubActive(
     .select()
     .single()
 
-  if (error) return { data: null, error: error.message }
+  if (error) {
+    logger.error('admin', 'setClubActive failed', { error: error.message, clubId })
+    return { data: null, error: error.message }
+  }
   if (!data) return { data: null, error: 'Клуб не найден' }
 
+  logger.info('admin', `setClubActive: club ${active ? 'shown' : 'hidden'}`, { clubId, requestingUserId })
   return { data: data as Club, error: null }
 }

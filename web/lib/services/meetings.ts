@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import type { Meeting, MeetingRow, MeetingWithDetails, Result } from '@/lib/types'
 import type { MeetingInput } from '@/lib/validators/meeting'
 import type { MeetingFilter } from '@/lib/validators/meeting'
+import { logger } from '@/lib/logger'
 
 const PAGE_SIZE = 20
 
@@ -34,7 +35,10 @@ export async function getMeetings(
 
   const { data, error } = await query
 
-  if (error) return { data: null, error: error.message }
+  if (error) {
+    logger.error('meetings', 'getMeetings failed', { error: error.message })
+    return { data: null, error: error.message }
+  }
 
   const meetings: MeetingWithDetails[] = (data ?? []).map((row) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -62,6 +66,7 @@ export async function getMeetings(
     }
   })
 
+  logger.info('meetings', `getMeetings returned ${meetings.length} results`, { limit, filter })
   return { data: meetings, error: null }
 }
 
@@ -138,6 +143,7 @@ export async function createMeeting(
     .single()
 
   if (clubError || !club) {
+    logger.warn('meetings', 'createMeeting forbidden: not owner', { clubId, userId })
     return { data: null, error: 'Клуб не найден или нет прав' }
   }
 
@@ -155,9 +161,13 @@ export async function createMeeting(
     .select()
     .single()
 
-  if (error) return { data: null, error: error.message }
+  if (error) {
+    logger.error('meetings', 'createMeeting failed', { error: error.message, clubId })
+    return { data: null, error: error.message }
+  }
   if (!data) return { data: null, error: 'Не удалось создать встречу' }
 
+  logger.info('meetings', 'createMeeting success', { meetingId: data.id, clubId })
   return { data: data as Meeting, error: null }
 }
 
@@ -199,9 +209,13 @@ export async function updateMeeting(
     .select()
     .single()
 
-  if (error) return { data: null, error: error.message }
+  if (error) {
+    logger.error('meetings', 'updateMeeting failed', { error: error.message, meetingId })
+    return { data: null, error: error.message }
+  }
   if (!data) return { data: null, error: 'Не удалось обновить встречу' }
 
+  logger.info('meetings', 'updateMeeting success', { meetingId })
   return { data: data as Meeting, error: null }
 }
 
@@ -258,6 +272,10 @@ export async function deleteMeeting(
   }
 
   const { error } = await supabase.from('meetings').delete().eq('id', meetingId)
-  if (error) return { data: null, error: error.message }
+  if (error) {
+    logger.error('meetings', 'deleteMeeting failed', { error: error.message, meetingId })
+    return { data: null, error: error.message }
+  }
+  logger.info('meetings', 'deleteMeeting success', { meetingId })
   return { data: null, error: null }
 }

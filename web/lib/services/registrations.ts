@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import type { Result, RegistrationResult, RegistrationWithProfile, CefrLevel } from '@/lib/types'
+import { logger } from '@/lib/logger'
 
 // ─── Тип результата записи ────────────────────────────────────────────────────
 // RegistrationResult = { ok: true } | { ok: false; reason: 'full' | 'duplicate' | 'inactive' | 'forbidden' }
@@ -27,6 +28,7 @@ export async function registerForMeeting(
     .single()
 
   if (meetingError || !meeting) {
+    logger.warn('registrations', 'registerForMeeting: meeting not found', { meetingId })
     return { ok: false, reason: 'inactive' }
   }
 
@@ -35,6 +37,7 @@ export async function registerForMeeting(
 
   // 2. Если клуб неактивен
   if (!isActive) {
+    logger.warn('registrations', 'registerForMeeting: club inactive', { meetingId })
     return { ok: false, reason: 'inactive' }
   }
 
@@ -44,6 +47,7 @@ export async function registerForMeeting(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const seatsTaken = ((meeting as any).seats_taken as number) ?? 0
   if (seatsTaken >= seatsTotal) {
+    logger.warn('registrations', 'registerForMeeting: no seats available', { meetingId, seatsTaken, seatsTotal })
     return { ok: false, reason: 'full' }
   }
 
@@ -56,11 +60,14 @@ export async function registerForMeeting(
   if (insertError) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((insertError as any).code === '23505') {
+      logger.warn('registrations', 'registerForMeeting: duplicate', { meetingId, userId })
       return { ok: false, reason: 'duplicate' }
     }
+    logger.error('registrations', 'registerForMeeting failed', { error: insertError.message, meetingId })
     return { ok: false, reason: 'full' }
   }
 
+  logger.info('registrations', 'registerForMeeting success', { meetingId, userId })
   return { ok: true }
 }
 
@@ -81,9 +88,11 @@ export async function unregisterFromMeeting(
     .eq('user_id', userId)
 
   if (error) {
+    logger.error('registrations', 'unregisterFromMeeting failed', { error: error.message, meetingId, userId })
     return { ok: false, reason: 'forbidden' }
   }
 
+  logger.info('registrations', 'unregisterFromMeeting success', { meetingId, userId })
   return { ok: true }
 }
 

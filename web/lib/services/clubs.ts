@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import type { Club, Result } from '@/lib/types'
 import type { ClubInput } from '@/lib/validators/club'
+import { logger } from '@/lib/logger'
 
 export async function getClub(clubId: string): Promise<Result<Club>> {
   const supabase = await createClient()
@@ -47,9 +48,13 @@ export async function createClub(
     .select()
     .single()
 
-  if (error) return { data: null, error: error.message }
+  if (error) {
+    logger.error('clubs', 'createClub failed', { error: error.message, userId })
+    return { data: null, error: error.message }
+  }
   if (!data) return { data: null, error: 'Не удалось создать клуб' }
 
+  logger.info('clubs', 'createClub success', { clubId: data.id, userId })
   return { data: data as Club, error: null }
 }
 
@@ -71,9 +76,13 @@ export async function updateClub(
     .select()
     .single()
 
-  if (error) return { data: null, error: error.message }
+  if (error) {
+    logger.error('clubs', 'updateClub failed', { error: error.message, clubId })
+    return { data: null, error: error.message }
+  }
   if (!data) return { data: null, error: 'Клуб не найден или нет прав' }
 
+  logger.info('clubs', 'updateClub success', { clubId })
   return { data: data as Club, error: null }
 }
 
@@ -89,6 +98,10 @@ export async function deleteClub(
     .eq('id', clubId)
     .eq('owner_id', userId)
 
-  if (error) return { data: null, error: error.message }
+  if (error) {
+    logger.error('clubs', 'deleteClub failed', { error: error.message, clubId })
+    return { data: null, error: error.message }
+  }
+  logger.info('clubs', 'deleteClub success', { clubId, userId })
   return { data: null, error: null }
 }
