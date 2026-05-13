@@ -20,6 +20,7 @@ describe('loginSchema', () => {
 
 describe('registerSchema', () => {
   const valid = {
+    name: 'Иван',
     email: 'user@example.com',
     password: '12345678',
     confirmPassword: '12345678',
@@ -27,6 +28,13 @@ describe('registerSchema', () => {
 
   it('принимает корректные данные', () => {
     expect(registerSchema.safeParse(valid).success).toBe(true)
+  })
+
+  it('отклоняет пустое имя', () => {
+    const result = registerSchema.safeParse({ ...valid, name: '' })
+    expect(result.success).toBe(false)
+    const messages = result.error?.issues.map((e) => e.message)
+    expect(messages).toContain('Введите имя')
   })
 
   it('отклоняет пароль короче 8 символов', () => {

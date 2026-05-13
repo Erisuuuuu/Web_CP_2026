@@ -2,14 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 // ── Моки (vi.hoisted — поднимаются до импортов) ───────────────────────────────
 
-const { mockInsert, mockDelete, mockFrom } = vi.hoisted(() => {
-  const mockInsert = vi.fn()
-  const mockDelete = vi.fn()
-
-  // Цепочки для from()
+const { mockFrom } = vi.hoisted(() => {
   const mockFrom = vi.fn()
-
-  return { mockInsert, mockDelete, mockFrom }
+  return { mockFrom }
 })
 
 vi.mock('@/lib/supabase/server', () => ({
@@ -25,7 +20,7 @@ import {
 
 // ── Хелперы ───────────────────────────────────────────────────────────────────
 
-/** Цепочка for: .select(...).eq(...).single() */
+/** .select().eq().single() → resolvedValue */
 function chainSingle(resolvedValue: unknown) {
   return {
     select: vi.fn().mockReturnValue({
@@ -36,23 +31,14 @@ function chainSingle(resolvedValue: unknown) {
   }
 }
 
-/** Цепочка for: .select(count).eq() → { count: N } */
-function chainCount(count: number) {
-  return {
-    select: vi.fn().mockReturnValue({
-      eq: vi.fn().mockResolvedValue({ count, error: null }),
-    }),
-  }
-}
-
-/** Цепочка for: .insert() */
+/** .insert() → resolvedValue */
 function chainInsert(resolvedValue: unknown) {
   return {
     insert: vi.fn().mockResolvedValue(resolvedValue),
   }
 }
 
-/** Цепочка for: .delete().eq().eq() */
+/** .delete().eq().eq() → resolvedValue */
 function chainDeleteEqEq(resolvedValue: unknown) {
   return {
     delete: vi.fn().mockReturnValue({
@@ -63,107 +49,89 @@ function chainDeleteEqEq(resolvedValue: unknown) {
   }
 }
 
-// ── Тесты ─────────────────────────────────────────────────────────────────────
+// ── Тесты: registerForMeeting ─────────────────────────────────────────────────
+// Логика: 1) fetch meeting (seats_total, seats_taken, club.is_active)
+//         2) если нет мест → full; если клуб неактивен → inactive
+//         3) INSERT; при 23505 → duplicate
 
 describe('registerForMeeting', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
+  beforeEach(() => vi.clearAllMocks())
 
   it('создаёт запись при корректных данных', async () => {
-    // 1. Встреча + клуб (is_active = true)
+    // 1. Встреча активна, 5 из 10 мест занято
     mockFrom.mockReturnValueOnce(
-      chainSingle({
-        data: { id: 'meeting-1', seats_total: 10, club: { is_active: true } },
-        error: null,
-      })
+      chainSingle({ data: { id: 'meeting-1', seats_total: 10, seats_taken: 5, club: { is_active: true } }, error: null })
     )
-    // 2. COUNT регистраций → 5 (меньше seats_total)
-    mockFrom.mockReturnValueOnce(chainCount(5))
-    // 3. INSERT → success
+    // 2. INSERT → success
     mockFrom.mockReturnValueOnce(chainInsert({ data: {}, error: null }))
 
     const result = await registerForMeeting('meeting-1', 'user-1')
-
     expect(result).toEqual({ ok: true })
   })
 
-  it('возвращает error: duplicate при повторной записи', async () => {
-    // 1. Встреча + клуб активен
+  it('возвращает error: full если мест нет', async () => {
+    // seats_taken === seats_total → full
     mockFrom.mockReturnValueOnce(
-      chainSingle({
-        data: { id: 'meeting-1', seats_total: 10, club: { is_active: true } },
-        error: null,
-      })
+      chainSingle({ data: { id: 'meeting-1', seats_total: 10, seats_taken: 10, club: { is_active: true } }, error: null })
     )
-    // 2. COUNT → 5
-    mockFrom.mockReturnValueOnce(chainCount(5))
-    // 3. INSERT → ошибка уникальности (код 23505)
+
+    const result = await registerForMeeting('meeting-1', 'user-1')
+    expect(result).toEqual({ ok: false, reason: 'full' })
+  })
+
+  it('возвращает error: inactive если клуб неактивен', async () => {
+    mockFrom.mockReturnValueOnce(
+      chainSingle({ data: { id: 'meeting-1', seats_total: 10, seats_taken: 0, club: { is_active: false } }, error: null })
+    )
+
+    const result = await registerForMeeting('meeting-1', 'user-1')
+    expect(result).toEqual({ ok: false, reason: 'inactive' })
+  })
+
+  it('возвращает error: inactive если встреча не найдена', async () => {
+    mockFrom.mockReturnValueOnce(
+      chainSingle({ data: null, error: { message: 'not found' } })
+    )
+
+    const result = await registerForMeeting('meeting-1', 'user-1')
+    expect(result).toEqual({ ok: false, reason: 'inactive' })
+  })
+
+  it('возвращает error: duplicate при повторной записи (код 23505)', async () => {
+    mockFrom.mockReturnValueOnce(
+      chainSingle({ data: { id: 'meeting-1', seats_total: 10, seats_taken: 5, club: { is_active: true } }, error: null })
+    )
     mockFrom.mockReturnValueOnce(
       chainInsert({ data: null, error: { code: '23505', message: 'duplicate key' } })
     )
 
     const result = await registerForMeeting('meeting-1', 'user-1')
-
     expect(result).toEqual({ ok: false, reason: 'duplicate' })
-  })
-
-  it('возвращает error: full если мест нет', async () => {
-    // 1. Встреча + клуб активен, seats_total = 10
-    mockFrom.mockReturnValueOnce(
-      chainSingle({
-        data: { id: 'meeting-1', seats_total: 10, club: { is_active: true } },
-        error: null,
-      })
-    )
-    // 2. COUNT → 10 (все места заняты)
-    mockFrom.mockReturnValueOnce(chainCount(10))
-    // INSERT не должен вызываться
-
-    const result = await registerForMeeting('meeting-1', 'user-1')
-
-    expect(result).toEqual({ ok: false, reason: 'full' })
-  })
-
-  it('возвращает error: inactive если клуб неактивен', async () => {
-    // 1. Встреча + клуб НЕактивен
-    mockFrom.mockReturnValueOnce(
-      chainSingle({
-        data: { id: 'meeting-1', seats_total: 10, club: { is_active: false } },
-        error: null,
-      })
-    )
-
-    const result = await registerForMeeting('meeting-1', 'user-1')
-
-    expect(result).toEqual({ ok: false, reason: 'inactive' })
   })
 })
 
+// ── Тесты: unregisterFromMeeting ──────────────────────────────────────────────
+// Логика: DELETE .eq(meeting_id).eq(user_id)
+//         нет ошибки → ok; есть ошибка (RLS) → forbidden
+
 describe('unregisterFromMeeting', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
+  beforeEach(() => vi.clearAllMocks())
 
   it('удаляет свою запись', async () => {
-    // DELETE → count = 1
     mockFrom.mockReturnValueOnce(
-      chainDeleteEqEq({ data: null, error: null, count: 1 })
+      chainDeleteEqEq({ data: null, error: null })
     )
 
     const result = await unregisterFromMeeting('meeting-1', 'user-1')
-
     expect(result).toEqual({ ok: true })
   })
 
-  it('возвращает error: forbidden при попытке удалить чужую запись', async () => {
-    // DELETE → count = 0 (запись не нашлась)
+  it('возвращает error: forbidden при ошибке (RLS блокировка)', async () => {
     mockFrom.mockReturnValueOnce(
-      chainDeleteEqEq({ data: null, error: null, count: 0 })
+      chainDeleteEqEq({ data: null, error: { code: '42501', message: 'permission denied' } })
     )
 
     const result = await unregisterFromMeeting('meeting-1', 'user-2')
-
     expect(result).toEqual({ ok: false, reason: 'forbidden' })
   })
 })
