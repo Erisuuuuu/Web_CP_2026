@@ -1,6 +1,7 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { meetingSchema, type MeetingInput } from '@/lib/validators/meeting'
 import type { Meeting } from '@/lib/types'
@@ -9,11 +10,12 @@ const CEFR_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const
 
 interface MeetingFormProps {
   clubId: string
-  action: (formData: FormData) => Promise<void | { error?: string }>
+  action: (formData: FormData) => Promise<void | { error?: string; redirectTo?: string }>
   meeting?: Meeting
 }
 
 export default function MeetingForm({ clubId, action, meeting }: MeetingFormProps) {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -45,6 +47,8 @@ export default function MeetingForm({ clubId, action, meeting }: MeetingFormProp
     const result = await action(formData)
     if (result?.error) {
       setError('root', { message: result.error })
+    } else if (result?.redirectTo) {
+      router.push(result.redirectTo)
     }
   })
 

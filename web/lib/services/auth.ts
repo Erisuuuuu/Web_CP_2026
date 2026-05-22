@@ -36,6 +36,14 @@ export async function signUp(
     return { data: null, error: 'Пользователь с таким email уже зарегистрирован' }
   }
 
+  // Если email confirmation включён, сессия не создана — нужно явно залогинить
+  if (!data.session) {
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+    if (signInError) {
+      return { data: null, error: 'Регистрация прошла, но не удалось войти. Проверьте email и войдите вручную' }
+    }
+  }
+
   return { data: { userId: data.user.id }, error: null }
 }
 

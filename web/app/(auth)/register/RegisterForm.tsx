@@ -1,6 +1,7 @@
 'use client'
 
 import { useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { registerSchema, type RegisterInput } from '@/lib/validators/auth'
@@ -8,6 +9,7 @@ import { registerAction } from '../actions'
 
 export default function RegisterForm() {
   const [isPending, startTransition] = useTransition()
+  const router = useRouter()
 
   const {
     register,
@@ -29,6 +31,8 @@ export default function RegisterForm() {
       const result = await registerAction(formData)
       if (result?.error) {
         setError('root', { message: result.error })
+      } else if (result?.redirectTo) {
+        router.push(result.redirectTo)
       }
     })
   }

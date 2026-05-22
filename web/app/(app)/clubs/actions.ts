@@ -33,7 +33,7 @@ export async function createClubAction(formData: FormData) {
     return { error: result.error }
   }
 
-  redirect('/organizer')
+  return { redirectTo: '/organizer' }
 }
 
 export async function updateClubAction(clubId: string, formData: FormData) {
@@ -60,7 +60,7 @@ export async function updateClubAction(clubId: string, formData: FormData) {
     return { error: result.error }
   }
 
-  redirect('/organizer')
+  return { redirectTo: '/organizer' }
 }
 
 export async function createMeetingAction(clubId: string, formData: FormData) {
@@ -90,7 +90,7 @@ export async function createMeetingAction(clubId: string, formData: FormData) {
     return { error: result.error }
   }
 
-  redirect(`/meetings/${result.data!.id}`)
+  return { redirectTo: `/meetings/${result.data!.id}` }
 }
 
 export async function deleteClubAction(clubId: string): Promise<Result<null>> {

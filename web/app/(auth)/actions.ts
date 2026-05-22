@@ -20,7 +20,7 @@ export async function loginAction(formData: FormData) {
 
   if (result.error) return { error: result.error }
 
-  redirect('/meetings')
+  return { redirectTo: '/meetings' }
 }
 
 export async function registerAction(formData: FormData) {
@@ -41,8 +41,7 @@ export async function registerAction(formData: FormData) {
 
   if (result.error) return { error: result.error }
 
-  // signUp уже создаёт сессию через cookies при отключённом email confirmation
-  redirect('/meetings')
+  return { redirectTo: '/meetings' }
 }
 
 export async function logoutAction() {

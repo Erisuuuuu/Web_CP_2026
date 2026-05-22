@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { getMeetingRegistrations } from '@/lib/services/registrations'
 import { generateCSV } from '@/lib/utils/csv'
-import type { CsvRow } from '@/lib/utils/csv'
+import type { CsvRow } from '@/lib/utils/csv' 
 
 export async function GET(
   _req: Request,

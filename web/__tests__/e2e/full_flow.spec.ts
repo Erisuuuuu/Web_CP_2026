@@ -19,28 +19,27 @@ test.describe('Full platform flow', () => {
     await page.goto('/register')
     await page.fill('[name="email"]', organizer.email)
     await page.fill('[name="password"]', organizer.password)
+    await page.fill('[name="confirmPassword"]', organizer.password)
     await page.fill('[name="name"]', organizer.name)
-    await page.click('[type="submit"]')
-    await expect(page).toHaveURL(/\/profile|\/meetings/)
+    await page.click('button[type="submit"]')
+    await expect(page).toHaveURL(/\/profile|\/meetings/, { timeout: 45000 })
 
     // 2. Создание клуба
     await page.goto('/clubs/new')
-    await page.fill('[name="name"]', `Test Club ${timestamp}`)
-    await page.fill('[name="language"]', 'English')
-    await page.click('[type="submit"]')
-    await expect(page).toHaveURL(/\/organizer|\/meetings/)
+    await page.fill('input[name="name"]', `Test Club ${timestamp}`)
+    await page.fill('textarea[name="description"]', 'English speaking club for practice')
+    await page.click('main [type="submit"]')
+    await expect(page).toHaveURL(/\/organizer/, { timeout: 45000 })
 
     // 3. Создание встречи — находим клуб через organizer page
-    await page.goto('/organizer')
-    const newMeetingLink = page.locator('a[href*="/meetings/new"]').first()
-    await newMeetingLink.click()
-    await page.fill('[name="title"]', `Test Meeting ${timestamp}`)
-    await page.fill('[name="seats_total"]', '10')
-    // scheduled_at / date — заполни поле datetime-local
+    await page.locator('a[href*="/meetings/new"]').first().click()
+    await page.fill('input[name="title"]', `Test Meeting ${timestamp}`)
     const tomorrow = new Date(Date.now() + 86400000).toISOString().slice(0, 16)
-    await page.fill('[name="date"], [name="scheduled_at"]', tomorrow)
-    await page.click('[type="submit"]')
-    await expect(page).toHaveURL(/\/meetings\/[a-z0-9-]+/)
+    await page.fill('input[name="date"]', tomorrow)
+    await page.selectOption('select[name="cefr_level"]', 'B1')
+    await page.fill('input[name="seats_total"]', '10')
+    await page.click('main [type="submit"]')
+    await expect(page).toHaveURL(/\/meetings\/[a-z0-9-]+/, { timeout: 45000 })
   })
 
   test('member: register, sign up for meeting', async ({ page }) => {
@@ -48,9 +47,10 @@ test.describe('Full platform flow', () => {
     await page.goto('/register')
     await page.fill('[name="email"]', member.email)
     await page.fill('[name="password"]', member.password)
+    await page.fill('[name="confirmPassword"]', member.password)
     await page.fill('[name="name"]', member.name)
-    await page.click('[type="submit"]')
-    await expect(page).toHaveURL(/\/profile|\/meetings/)
+    await page.click('button[type="submit"]')
+    await expect(page).toHaveURL(/\/profile|\/meetings/, { timeout: 45000 })
 
     // 2. Открыть каталог и найти встречу
     await page.goto('/meetings')

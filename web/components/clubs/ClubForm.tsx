@@ -1,19 +1,22 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { clubSchema, type ClubInput } from '@/lib/validators/club'
 import type { Club } from '@/lib/types'
 
 interface ClubFormProps {
   club?: Club
-  action: (formData: FormData) => Promise<void | { error?: string }>
+  action: (formData: FormData) => Promise<void | { error?: string; redirectTo?: string }>
 }
 
 export default function ClubForm({ club, action }: ClubFormProps) {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<ClubInput>({
     resolver: zodResolver(clubSchema),
@@ -27,7 +30,12 @@ export default function ClubForm({ club, action }: ClubFormProps) {
     const formData = new FormData()
     formData.set('name', values.name)
     if (values.description) formData.set('description', values.description)
-    await action(formData)
+    const result = await action(formData)
+    if (result?.error) {
+      setError('root', { message: result.error })
+    } else if (result?.redirectTo) {
+      router.push(result.redirectTo)
+    }
   })
 
   const inputClass = 'w-full rounded-lg px-3 py-2 text-sm outline-none transition-colors'
@@ -61,6 +69,10 @@ export default function ClubForm({ club, action }: ClubFormProps) {
         />
         {errors.description && <p className="mt-1 text-xs text-red-500">{errors.description.message}</p>}
       </div>
+
+      {errors.root && (
+        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{errors.root.message}</p>
+      )}
 
       <button
         type="submit"
